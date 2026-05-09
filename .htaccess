@@ -1,0 +1,3 @@
+# Redirigir index.html a index.php per compatibilitat
+RewriteEngine On
+RewriteRule ^index\.html$ index.php [R=301,L]
