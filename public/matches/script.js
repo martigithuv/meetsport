@@ -28,16 +28,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
         socket.on('receive_message', (data) => {
-        if (activeChat && activeChat.id === data.senderId) {
-            // Asegurar que usamos 'content' para la consistencia
-            const newMsg = { ...data, isMe: false };
-            // Si por alguna razón llega 'text', lo normalizamos a 'content'
-            if (data.text && !data.content) newMsg.content = data.text;
-            messages.push(newMsg);
-            renderMessages();
-        } else {
-            fetchConversations();
+        // Si el mensaje es para el chat activo (ya sea que lo envié yo o el otro)
+        if (activeChat && (activeChat.id === data.senderId || activeChat.id === data.recipientId)) {
+            // Evitar duplicados si el mensaje ya está en la lista (por el push del handleSend)
+            const exists = messages.find(m => m.id === data.id || (m.content === data.content && m.time === data.time && m.senderId === data.senderId));
+            if (!exists) {
+                const newMsg = { 
+                    ...data, 
+                    isMe: data.senderId === user._id,
+                    content: data.content || data.text // Normalizar
+                };
+                messages.push(newMsg);
+                renderMessages();
+            }
         }
+        // Siempre actualizar la lista de conversaciones para ver el último mensaje
+        fetchConversations();
     });
 
     const fetchConversations = async () => {
@@ -173,15 +179,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const handleSend = async (imgData = null) => {
         const input = document.getElementById('chat-input');
-        const content = input.value.trim();
+        const content = input ? input.value.trim() : '';
         
-        // Si nos pasan un Event (de onclick), lo ignoramos para la imagen
         const actualImage = typeof imgData === 'string' ? imgData : null;
 
-        if (!content && !actualImage) {
-            console.log("Missatge buit ignorat");
-            return;
-        }
+        if (!content && !actualImage) return;
         if (!activeChat) return;
 
         try {
@@ -191,29 +193,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}` 
                 },
-                body: JSON.stringify({ 
-                    content: content,
-                    image: actualImage
-                })
+                body: JSON.stringify({ content, image: actualImage })
             });
             const data = await response.json();
             
-            // Limpiar input inmediatamente para mejor UX
-            input.value = '';
+            if (input) input.value = '';
             
-            messages.push(data);
-            renderMessages();
+            // El mensaje se añadirá a la lista a través del evento 'receive_message' del socket
+            // que emitimos a continuación, así evitamos duplicados y confirmamos que pasó por el servidor.
 
             socket.emit('send_message', {
+                id: data.id,
                 recipientId: activeChat.id,
                 senderId: user._id,
                 senderName: user.name,
-                content: content,
-                image: actualImage,
-                time: data.time,
-                isMe: true
+                content: data.content,
+                image: data.image,
+                time: data.time
             });
-            fetchConversations();
         } catch (err) { console.error(err); }
     };
 

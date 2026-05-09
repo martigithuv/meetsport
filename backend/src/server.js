@@ -86,7 +86,8 @@ io.on('connection', (socket) => {
       const recipient = await User.findById(data.recipientId);
       
       if (sender && recipient) {
-        const previewText = data.content || "📸 Ha enviat una imatge";
+        // Usamos data.content que es lo que envía el frontend ahora
+        const previewText = data.content || (data.image ? "📸 Ha enviat una imatge" : "Nou missatge");
         await sendMessageNotification(recipient.email, recipient.name, sender.name, previewText);
       }
     } catch (error) {

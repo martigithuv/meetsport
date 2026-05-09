@@ -98,25 +98,32 @@ exports.loginAdmin = async (req, res) => {
       let adminUser = await User.findOne({ email: 'admin@meetsport.com' });
       
       if (!adminUser) {
-        adminUser = await User.create({
+        // Si no existe, lo creamos con el rol ADMIN
+        adminUser = new User({
           name: 'Administrador',
           email: 'admin@meetsport.com',
-          password: 'masterpassword_meetsport_2026', // Contraseña interna aleatoria
+          password: 'masterpassword_meetsport_2026',
           role: 'ADMIN'
         });
+        await adminUser.save();
+      } else if (adminUser.role !== 'ADMIN') {
+        // Si existe pero no es ADMIN, lo actualizamos
+        adminUser.role = 'ADMIN';
+        await adminUser.save();
       }
 
       res.json({
         _id: adminUser._id,
         name: adminUser.name,
         email: adminUser.email,
-        role: 'ADMIN', // Forzamos el rol ADMIN para asegurar la redirección
+        role: 'ADMIN',
         token: generateToken(adminUser._id),
       });
     } else {
       res.status(401).json({ message: 'Contrasenya d\'administrador incorrecta' });
     }
   } catch (error) {
+    console.error("ADMIN LOGIN ERROR:", error);
     res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
 };
