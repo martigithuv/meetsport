@@ -76,27 +76,21 @@ io.on('connection', (socket) => {
     }
 
     try {
-      const Message = require('./models/Message');
       const User = require('./models/User');
       const { sendMessageNotification } = require('./services/email');
       
-      await Message.create({
-        sender: data.senderId,
-        recipient: data.recipientId,
-        content: data.text,
-        image: data.image,
-        matchId: data.matchId
-      });
-
+      // El mensaje ya se guarda en la base de datos a través del controlador REST (POST /api/messages/send/:recipientId)
+      // Aquí solo nos encargamos de las notificaciones por email si es necesario.
+      
       const sender = await User.findById(data.senderId);
       const recipient = await User.findById(data.recipientId);
       
       if (sender && recipient) {
-        const previewText = data.text || "📸 Ha enviat una imatge";
+        const previewText = data.content || "📸 Ha enviat una imatge";
         await sendMessageNotification(recipient.email, recipient.name, sender.name, previewText);
       }
     } catch (error) {
-      console.error('Error al persistir mensaje:', error);
+      console.error('Error al procesar notificación de mensaje:', error);
     }
   });
 

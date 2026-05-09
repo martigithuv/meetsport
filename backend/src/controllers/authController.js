@@ -110,7 +110,7 @@ exports.loginAdmin = async (req, res) => {
         _id: adminUser._id,
         name: adminUser.name,
         email: adminUser.email,
-        role: adminUser.role,
+        role: 'ADMIN', // Forzamos el rol ADMIN para asegurar la redirección
         token: generateToken(adminUser._id),
       });
     } else {

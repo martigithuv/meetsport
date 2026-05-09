@@ -111,6 +111,35 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+// @desc    Cambiar contraseña del usuario
+// @route   PUT /api/users/change-password
+// @access  Private
+exports.changePassword = async (req, res) => {
+  try {
+    const { newPassword, confirmPassword } = req.body;
+
+    if (!newPassword || !confirmPassword) {
+      return res.status(400).json({ message: 'Tots els camps són obligatoris' });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: 'Les contrasenyes no coincideixen' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'La contrasenya ha de tenir almenys 6 caràcters' });
+    }
+
+    const user = await User.findById(req.user._id);
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true, message: 'Contrasenya canviada correctament' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al canviar la contrasenya', error: error.message });
+  }
+};
+
 // @desc    Obtener contadores de seguidores
 // @route   GET /api/users/stats
 // @access  Private

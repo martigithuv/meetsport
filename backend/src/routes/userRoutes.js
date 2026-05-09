@@ -6,6 +6,7 @@ const {
   followUser, 
   unfollowUser, 
   updateProfile, 
+  changePassword,
   getUserStats,
   registerProfileView,
   toggleFavorite,
@@ -15,6 +16,7 @@ const {
 router.get('/search', protect, searchUsers);
 router.get('/stats', protect, getUserStats);
 router.put('/profile', protect, updateProfile);
+router.put('/change-password', protect, changePassword);
 router.post('/follow/:id', protect, followUser);
 router.post('/unfollow/:id', protect, unfollowUser);
 router.post('/view/:id', protect, registerProfileView);

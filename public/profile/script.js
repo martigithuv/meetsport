@@ -70,8 +70,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <button class="btn-save" id="save-btn">Desar canvis</button>
                 </div>
+
+                <div class="settings-card animate-fade-in" style="margin-top: 2rem;">
+                    <h2 class="font-display" style="margin-bottom:2rem;">Canviar Contrasenya</h2>
+                    <div id="password-error" class="error-box hidden" style="background: rgba(255, 71, 87, 0.1); color: #ff4757; padding: 12px; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; border: 1px solid rgba(255, 71, 87, 0.2);"></div>
+                    <div id="password-success" class="success-box hidden" style="background: rgba(200, 245, 66, 0.1); color: #c8f542; padding: 12px; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; border: 1px solid rgba(200, 245, 66, 0.2);"></div>
+                    
+                    <div class="form-group">
+                        <label style="color:#c8f542; font-weight:800; display:block; margin-bottom:8px;">Contrasenya Nova</label>
+                        <input type="password" id="new-password" style="background:#222; border:1px solid #444; color:white; padding:12px; border-radius:10px; width:100%;">
+                    </div>
+                    <div class="form-group">
+                        <label style="color:#c8f542; font-weight:800; display:block; margin-bottom:8px;">Repetir Contrasenya Nova</label>
+                        <input type="password" id="confirm-password" style="background:#222; border:1px solid #444; color:white; padding:12px; border-radius:10px; width:100%;">
+                    </div>
+                    <button class="btn-save" id="change-password-btn" style="background: #c8f542; color: black;">Actualitzar Contrasenya</button>
+                </div>
             `;
             document.getElementById('save-btn').onclick = handleSave;
+            document.getElementById('change-password-btn').onclick = handleChangePassword;
         } else if (activeTab === 'activitats') {
             if (myActivities.length === 0) {
                 tabPane.innerHTML = '<p class="text-center">No has creat cap activitat encara.</p>';
@@ -159,6 +176,61 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (err) { console.error(err); }
         finally { btn.innerText = 'Desar canvis'; btn.disabled = false; }
+    };
+
+    const handleChangePassword = async () => {
+        const btn = document.getElementById('change-password-btn');
+        const errorBox = document.getElementById('password-error');
+        const successBox = document.getElementById('password-success');
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        errorBox.classList.add('hidden');
+        successBox.classList.add('hidden');
+
+        if (!newPassword || !confirmPassword) {
+            errorBox.innerText = 'Tots els camps són obligatoris';
+            errorBox.classList.remove('hidden');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            errorBox.innerText = 'No coincideix';
+            errorBox.classList.remove('hidden');
+            return;
+        }
+
+        btn.innerText = 'Actualitzant...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch("http://localhost:5000/api/users/change-password", {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}` 
+                },
+                body: JSON.stringify({ newPassword, confirmPassword })
+            });
+            const data = await response.json();
+            
+            if (response.ok) {
+                successBox.innerText = 'Contrasenya canviada correctament';
+                successBox.classList.remove('hidden');
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+            } else {
+                errorBox.innerText = data.message || 'Error al canviar la contrasenya';
+                errorBox.classList.remove('hidden');
+            }
+        } catch (err) { 
+            console.error(err);
+            errorBox.innerText = 'Error de connexió';
+            errorBox.classList.remove('hidden');
+        } finally {
+            btn.innerText = 'Actualitzar Contrasenya';
+            btn.disabled = false;
+        }
     };
 
     window.deleteMyActivity = async (id) => {

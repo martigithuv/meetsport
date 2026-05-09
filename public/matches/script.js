@@ -27,10 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.emit('join_user_room', user._id);
     });
 
-    socket.on('receive_message', (data) => {
+        socket.on('receive_message', (data) => {
         if (activeChat && activeChat.id === data.senderId) {
             // Asegurar que usamos 'content' para la consistencia
             const newMsg = { ...data, isMe: false };
+            // Si por alguna razón llega 'text', lo normalizamos a 'content'
             if (data.text && !data.content) newMsg.content = data.text;
             messages.push(newMsg);
             renderMessages();
