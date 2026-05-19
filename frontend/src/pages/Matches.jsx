@@ -20,7 +20,7 @@ const Matches = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/';
+    const socketUrl = import.meta.env.VITE_WS_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/');
     const newSocket = io(socketUrl);
     setSocket(newSocket);
 
