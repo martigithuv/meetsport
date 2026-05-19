@@ -19,9 +19,9 @@ exports.getActivities = async (req, res) => {
 
     query.isHidden = { $ne: true };
 
-    const activities = await Activity.find(query).populate('creator', 'name profileDetails');
+    const activities = await Activity.find(query).populate('creator', 'name profileDetails').lean();
     const mappedActivities = activities.map(act => {
-      const activityObj = act.toObject();
+      const activityObj = act;
       const participantsCount = activityObj.participants?.length || 0;
       const availableSlots = Math.max(0, activityObj.maxParticipants - participantsCount);
       if (activityObj.creator) activityObj.creator.avatar = activityObj.creator.profileDetails?.avatar;
@@ -43,13 +43,13 @@ exports.getActivities = async (req, res) => {
 // @access  Public
 exports.getActivityById = async (req, res) => {
   try {
-    const activity = await Activity.findById(req.params.id).populate('creator', 'name profileDetails');
+    const activity = await Activity.findById(req.params.id).populate('creator', 'name profileDetails').lean();
 
     if (!activity) {
       return res.status(404).json({ message: 'Actividad no encontrada' });
     }
 
-    const activityObj = activity.toObject();
+    const activityObj = activity;
     const participantsCount = activityObj.participants?.length || 0;
     const availableSlots = Math.max(0, activityObj.maxParticipants - participantsCount);
 
@@ -116,7 +116,11 @@ exports.joinActivity = async (req, res) => {
 // @access  Private
 exports.createActivity = async (req, res) => {
   try {
-    const { sport, title, description, address, date, maxParticipants, level } = req.body;
+    const { sport, title, description, address, date, maxParticipants, level, location, images } = req.body;
+
+    // Extract URL and address from location object if provided
+    const locationUrl = location?.url || '';
+    const locationAddress = location?.address || address || '';
 
     const activity = await Activity.create({
       creator: req.user._id,
@@ -126,8 +130,10 @@ exports.createActivity = async (req, res) => {
       location: {
         type: 'Point',
         coordinates: [2.1734, 41.3851], // Coordenadas de Barcelona por defecto
-        address
+        address: locationAddress,
+        url: locationUrl
       },
+      images: Array.isArray(images) ? images : [],
       date,
       maxParticipants,
       level
@@ -192,8 +198,12 @@ exports.getFavorites = async (req, res) => {
 // @access  Private
 exports.getMyActivities = async (req, res) => {
   try {
-    const activities = await Activity.find({ creator: req.user._id }).sort({ createdAt: -1 });
-    res.json(activities);
+    const activities = await Activity.find({ creator: req.user._id }).sort({ createdAt: -1 }).lean();
+    const mappedActivities = activities.map(act => ({
+      ...act,
+      participantsCount: act.participants?.length || 0
+    }));
+    res.json(mappedActivities);
   } catch (error) {
     res.status(500).json({ message: 'Error obtenint les teves activitats', error: error.message });
   }
@@ -218,5 +228,74 @@ exports.deleteActivity = async (req, res) => {
     res.json({ success: true, message: 'Activitat eliminada correctamente' });
   } catch (error) {
     res.status(500).json({ message: 'Error eliminant activitat', error: error.message });
+  }
+};
+
+// @desc    Finalizar una actividad
+// @route   PUT /api/activities/:id/finalize
+// @access  Private
+exports.finalizeActivity = async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.id);
+    if (!activity) return res.status(404).json({ message: 'Activitat no trobada' });
+    
+    if (activity.creator.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Només el creador pot finalitzar l\'activitat' });
+    }
+    
+    activity.status = 'FINALITZADA';
+    await activity.save();
+    
+    // Find admin user to send the automated notification message
+    let adminUser = await User.findOne({ role: 'ADMIN' });
+    if (!adminUser) {
+      adminUser = await User.findOne({ email: 'admin@meetsport.com' });
+    }
+    const adminId = adminUser ? adminUser._id : req.user._id;
+    
+    // Send automated message to all participants
+    const Message = require('../models/Message');
+    const participants = activity.participants || [];
+    for (const participantId of participants) {
+      if (participantId.toString() !== req.user._id.toString()) {
+        const messageContent = `sha tancat la activitat ${activity.title}, es el moment de fer una valoracio [${activity._id}]`;
+        await Message.create({
+          sender: adminId,
+          recipient: participantId,
+          content: messageContent,
+          read: false
+        });
+      }
+    }
+    
+    res.json({ success: true, message: 'Activitat finalitzada correctament' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error finalitzant activitat', error: error.message });
+  }
+};
+
+// @desc    Obtener participantes de una actividad
+// @route   GET /api/activities/:id/participants
+// @access  Public
+exports.getActivityParticipants = async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.id)
+      .populate('creator', 'name total_points profileDetails badges')
+      .populate({
+        path: 'participants',
+        select: 'name total_points profileDetails badges',
+        populate: { path: 'badges', populate: { path: 'badge' } }
+      });
+    
+    if (!activity) return res.status(404).json({ message: 'Activitat no trobada' });
+    
+    const people = [...activity.participants];
+    if (activity.creator) {
+      people.push(activity.creator);
+    }
+    
+    res.json(people);
+  } catch (error) {
+    res.status(500).json({ message: 'Error obtenint participants', error: error.message });
   }
 };

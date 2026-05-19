@@ -21,6 +21,7 @@ const server = http.createServer(app);
 // Configuración de Socket.io
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost:5173',
   'http://127.0.0.1:3000',
   'http://localhost:5000',
   'http://localhost',
@@ -33,6 +34,8 @@ const io = new Server(server, {
   },
 });
 
+app.set('io', io);
+
 // Middlewares
 app.use(helmet());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
@@ -43,6 +46,9 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/activities', require('./routes/activityRoutes'));
+app.use('/api/enrollments', require('./routes/enrollmentRoutes'));
+app.use('/api/ratings', require('./routes/ratingRoutes'));
+app.use('/api/badges', require('./routes/badgeRoutes'));
 app.use('/api/stripe', require('./routes/stripeRoutes'));
 app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));

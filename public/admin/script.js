@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td><span style="color:${u.isPremium ? 'var(--color-orange)' : 'var(--color-muted3)'}; font-weight:800; font-size:0.6rem; text-transform:uppercase;">${u.isPremium ? 'Premium' : 'Free'}</span></td>
                             <td><span style="color:${u.isBlocked ? '#ff4b4b' : 'var(--color-lime)'}; font-weight:700;">${u.isBlocked ? 'Bloquejat' : 'Actiu'}</span></td>
                             <td>
+                                <button class="btn-action btn-star" onclick="openDeductModal('${u._id}', '${u.name}', ${u.total_points || 0})">⭐</button>
                                 <button class="btn-action btn-block" onclick="toggleBlock('${u._id}')">🚫</button>
                                 <button class="btn-action btn-delete" onclick="deleteUser('${u._id}')">🗑️</button>
                             </td>
@@ -147,12 +148,23 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteUser = async (id) => {
-        if (!confirm('Eliminar usuari?')) return;
-        await fetch(`http://localhost:5000/api/admin/users/${id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${user.token}` }
-        });
-        fetchData();
+        if (!confirm('Eliminar usuari i totes les seves dades per sempre?')) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${user.token}` }
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Usuari eliminat correctament');
+                fetchData();
+            } else {
+                alert(data.message || 'Error al eliminar usuari');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error de connexió');
+        }
     };
 
     window.toggleHide = async (id) => {
@@ -164,13 +176,72 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.deleteActivity = async (id) => {
-        if (!confirm('Eliminar activitat?')) return;
-        await fetch(`http://localhost:5000/api/admin/activities/${id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${user.token}` }
-        });
-        fetchData();
+        if (!confirm('Eliminar activitat i inscripcions per sempre?')) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/admin/activities/${id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${user.token}` }
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert('Activitat eliminada correctament');
+                fetchData();
+            } else {
+                alert(data.message || 'Error al eliminar activitat');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error de connexió');
+        }
     };
+
+    // Modal Deducció de Punts
+    const deductModal = document.getElementById('deduct-modal');
+    const deductForm = document.getElementById('deduct-form');
+
+    window.openDeductModal = (userId, userName, currentPoints) => {
+        document.getElementById('deduct-user-id').value = userId;
+        document.getElementById('deduct-user-info').innerText = `Usuari: ${userName}`;
+        document.getElementById('current-points-display').innerText = currentPoints;
+        document.getElementById('points-to-deduct').value = '';
+        document.getElementById('deduct-comment').value = '';
+        deductModal.classList.remove('hidden');
+    };
+
+    window.closeDeductModal = () => {
+        deductModal.classList.add('hidden');
+    };
+
+    if (deductForm) {
+        deductForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('deduct-user-id').value;
+            const points = document.getElementById('points-to-deduct').value;
+            const comment = document.getElementById('deduct-comment').value;
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/admin/users/deduct-points/${userId}`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}` 
+                    },
+                    body: JSON.stringify({ points, comment })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Punts restats i missatge enviat');
+                    closeDeductModal();
+                    fetchData();
+                } else {
+                    alert(data.message || 'Error al restar punts');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error de connexió');
+            }
+        };
+    }
 
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.onclick = () => {

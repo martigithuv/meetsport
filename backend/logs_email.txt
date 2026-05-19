@@ -1,18 +1,160 @@
 
---- SERVIDOR REINICIAT EL 8/5/2026, 9:11:49 ---
+[15/5/2026, 22:31:24] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48ff43f213esm5618085e9.1 - gsmtp
 
---- SERVIDOR REINICIAT EL 8/5/2026, 9:12:35 ---
+[15/5/2026, 22:31:31] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fe537c788sm79689155e9.12 - gsmtp
 
---- SERVIDOR REINICIAT EL 8/5/2026, 9:21:09 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:34:38 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 9:21:19 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:34:38 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 9:37:57 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:34:45 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 10:16:00 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:34:46 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 10:27:31 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:40:48 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 10:46:42 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:40:48 ---
 
---- SERVIDOR REINICIAT EL 8/5/2026, 10:46:45 ---
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:40:53 ---
+
+--- SERVIDOR REINICIAT EL 16/5/2026, 11:40:54 ---
+
+[16/5/2026, 16:24:41] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48febe661e1sm38553525e9.22 - gsmtp
+
+[16/5/2026, 16:24:47] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fe53767ecsm119715765e9.10 - gsmtp
+
+[16/5/2026, 16:24:57] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fe5694fbfsm232132475e9.6 - gsmtp
+
+--- SERVIDOR REINICIAT EL 17/5/2026, 19:04:25 ---
+
+--- SERVIDOR REINICIAT EL 17/5/2026, 19:04:25 ---
+
+[17/5/2026, 21:26:20] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-45d9ec39806sm30810787f8f.9 - gsmtp
+
+[17/5/2026, 21:26:30] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fffb9aac4sm158475135e9.9 - gsmtp
+
+[17/5/2026, 21:26:59] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48febe582d0sm75398815e9.18 - gsmtp
+
+[17/5/2026, 21:27:13] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48febe661e1sm65809645e9.22 - gsmtp
+
+[17/5/2026, 21:27:27] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fead15bf3sm67012895e9.6 - gsmtp
+
+[17/5/2026, 21:33:41] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-45d9e768072sm31247883f8f.5 - gsmtp
+
+[17/5/2026, 21:35:42] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fead18659sm66070125e9.7 - gsmtp
+
+[17/5/2026, 22:20:47] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48fe4c833fcsm208626465e9.2 - gsmtp
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:13:38 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:13:38 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:13:42 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:13:42 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:50:12 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 9:50:12 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 12:50:14 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 12:50:14 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 12:50:18 ---
+
+--- SERVIDOR REINICIAT EL 18/5/2026, 12:50:19 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 8:28:06 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 8:28:06 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 8:28:14 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 8:28:15 ---
+
+[19/5/2026, 8:32:13] [ERROR REAL ACTIVITAT]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-48febe6afe7sm96259055e9.24 - gsmtp
+
+[19/5/2026, 8:43:31] [ERROR REAL ACTIVITAT]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-45da0a1a22csm42274317f8f.19 - gsmtp
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 9:00:13 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 9:00:13 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:46:28 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:46:28 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:51:40 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:51:41 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:52:10 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:52:10 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:52:14 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:52:15 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:55:34 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:55:35 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:56:38 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:56:38 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:56:44 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 10:56:45 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:35:35 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:35:35 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:35:46 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:35:46 ---
+
+[19/5/2026, 11:40:24] [ERROR REAL MISSATGE]: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-45da0a19b1dsm43331919f8f.17 - gsmtp
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:56:08 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:56:08 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:56:20 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:56:21 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:57:59 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:58:00 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:58:11 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:58:12 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:58:22 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 11:58:22 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 12:12:00 ---
+
+--- SERVIDOR REINICIAT EL 19/5/2026, 12:12:01 ---

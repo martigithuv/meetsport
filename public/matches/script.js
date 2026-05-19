@@ -163,15 +163,46 @@ document.addEventListener('DOMContentLoaded', function() {
             const messageText = msg.content || msg.text || '';
             const isMe = msg.isMe;
             
+            const linkify = (text) => {
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, function(url) {
+                    return '<a href="' + url + '" style="color:var(--color-lime); text-decoration:underline;" target="_blank">' + url + '</a>';
+                });
+            };
+            
             const div = document.createElement('div');
             div.className = `message ${isMe ? 'me' : 'other'}`;
-            div.innerHTML = `
-                <div class="message-content">
-                    ${msg.image ? `<img src="${msg.image}" class="message-img" onclick="window.open('${msg.image}', '_blank')">` : ''}
-                    <div>${messageText || ''}</div>
-                </div>
-                <div class="message-time">${timeStr}</div>
-            `;
+            
+            // Check if it's the admin notification for rating
+            const ratingMatch = messageText.match(/sha tancat la activitat (.*), es el moment de fer una valoracio \[(.*)\]/);
+            
+            if (ratingMatch) {
+                const activityTitle = ratingMatch[1];
+                const activityId = ratingMatch[2];
+                div.innerHTML = `
+                    <div class="message-content" style="background: linear-gradient(135deg, rgba(255, 107, 43, 0.15), rgba(20, 20, 25, 0.95)) !important; border: 1.5px solid var(--color-orange) !important; padding: 1.25rem; border-radius: 20px; box-shadow: 0 8px 32px rgba(255, 107, 43, 0.15); max-width: 340px;">
+                        <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.6rem;">
+                            <span style="font-size:1.4rem;">🏆</span>
+                            <strong style="color:white; font-size:0.95rem; font-family:var(--font-display);">Activitat Finalitzada</strong>
+                        </div>
+                        <div style="font-size:0.8rem; color:var(--color-muted3); line-height:1.4; margin-bottom:1rem;">
+                            S'ha tancat l'activitat <span style="color:var(--color-lime); font-weight:700;">${activityTitle}</span>. És el moment de valorar el creador i els teus companys!
+                        </div>
+                        <button class="btn-rate-activity-msg" data-activity-id="${activityId}" style="background:var(--color-orange); color:white; border:none; padding:0.75rem 1rem; border-radius:12px; font-weight:800; font-size:0.75rem; cursor:pointer; width:100%; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:0.4rem; box-shadow: 0 4px 15px rgba(255, 107, 43, 0.3);">
+                            ⭐ VALORAR ARA
+                        </button>
+                    </div>
+                    <div class="message-time">${timeStr}</div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div class="message-content">
+                        ${msg.image ? `<img src="${msg.image}" class="message-img" onclick="window.open('${msg.image}', '_blank')">` : ''}
+                        <div>${linkify(messageText) || ''}</div>
+                    </div>
+                    <div class="message-time">${timeStr}</div>
+                `;
+            }
             msgContainer.appendChild(div);
         });
         msgContainer.scrollTop = msgContainer.scrollHeight;
@@ -241,6 +272,169 @@ document.addEventListener('DOMContentLoaded', function() {
     if (userId && userName) {
         selectChat({ id: userId, name: userName });
     }
+
+    // Delegated click handler for rating buttons inside chat
+    document.addEventListener('click', async (e) => {
+        const rateBtn = e.target.closest('.btn-rate-activity-msg');
+        if (rateBtn) {
+            const activityId = rateBtn.getAttribute('data-activity-id');
+            console.log('[DEBUG] Open rating modal from chat for activity:', activityId);
+            window.showRatingModal(activityId);
+        }
+    });
+
+    // ── GLOBAL FUNCTIONS (MODALS) ────────────────────────────────────────────────
+    window.showRatingModal = async function(activityId) {
+        const API_BASE = 'http://localhost:5000/api';
+
+        try {
+            console.log('[DEBUG] showRatingModal started for activityId:', activityId);
+            const [res, ratingsRes] = await Promise.all([
+                fetch(`${API_BASE}/activities/${activityId}/participants`),
+                fetch(`${API_BASE}/ratings/activity/${activityId}`)
+            ]);
+            
+            if (!res.ok) throw new Error('Error fetching participants: ' + res.statusText);
+            if (!ratingsRes.ok) throw new Error('Error fetching ratings: ' + ratingsRes.statusText);
+
+            const participants = await res.json();
+            const ratings = await ratingsRes.json();
+            
+            console.log('[DEBUG] showRatingModal fetched:', { participants, ratings });
+
+            // Filter and format safely
+            const myRatings = Array.isArray(ratings) ? ratings.filter(r => {
+                const raterId = r && r.rater ? (r.rater._id || r.rater) : null;
+                return raterId && String(raterId) === String(user._id);
+            }) : [];
+
+            const ratedIds = myRatings.map(r => {
+                const recId = r && r.recipient ? (r.recipient._id || r.recipient) : null;
+                return recId ? String(recId) : '';
+            }).filter(Boolean);
+
+            console.log('[DEBUG] Already rated IDs:', ratedIds);
+
+            const toRate = Array.isArray(participants) ? participants.filter(p => {
+                if (!p || !p._id) return false;
+                const isSelf = String(p._id) === String(user._id);
+                const isAlreadyRated = ratedIds.includes(String(p._id));
+                return !isSelf && !isAlreadyRated;
+            }) : [];
+
+            console.log('[DEBUG] To rate list:', toRate);
+
+            if (toRate.length === 0) { 
+                alert('No hi ha altres participants pendents de valorar.'); 
+                return; 
+            }
+
+            const overlay = document.createElement('div');
+            overlay.id = 'rating-overlay';
+            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(10px);';
+
+            overlay.innerHTML = `
+                <div style="background:#111; padding:2rem; border-radius:24px; width:90%; max-width:500px; max-height:80vh; overflow-y:auto; border:1px solid rgba(255,255,255,0.1); position:relative;">
+                    <h2 style="margin-bottom:1.5rem; color:white; font-family:inherit;">Valorar Participants</h2>
+                    <div id="participants-list">
+                        ${toRate.map((p, index) => {
+                            const avatarUrl = p.profileDetails?.avatar || '../assets/default-avatar.png';
+                            return `
+                                <div class="rating-item" id="rating-step-${index}" data-recipient-id="${p._id}" style="display: ${index === 0 ? 'block' : 'none'}; background:rgba(255,255,255,0.05); padding:1.2rem; border-radius:20px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);">
+                                    <div style="text-align:center; color:var(--color-muted3); font-size:0.75rem; margin-bottom:1rem;">Participant ${index + 1} de ${toRate.length}</div>
+                                    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+                                        <div style="width:45px; height:45px; border-radius:50%; overflow:hidden; border:2px solid var(--color-orange);">
+                                            <img src="${avatarUrl}" style="width:100%; height:100%; object-fit:cover;">
+                                        </div>
+                                        <strong style="color:white; font-size:1rem;">${p.name || 'Companys'}</strong>
+                                    </div>
+                                    <div class="stars" style="font-size:1.8rem; cursor:pointer; color:#333; display:flex; gap:0.6rem; margin-bottom:1.2rem; justify-content:center;">
+                                        <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+                                    </div>
+                                    <textarea placeholder="Explica com ha anat..." style="width:100%; background:#000; border:1px solid #222; color:white; padding:1rem; border-radius:12px; font-size:0.85rem; outline:none;"></textarea>
+                                    <button class="send-rating" style="width:100%; margin-top:1rem; background:var(--color-lime); color:black; border:none; padding:0.9rem; border-radius:12px; font-weight:800; cursor:pointer; transition:all 0.2s;">ENVIAR (+0 PTS)</button>
+                                </div>
+                            `;
+                        }).join('')}
+                        
+                        <div id="rating-done" style="display:none; text-align:center; padding:2rem 0;">
+                            <div style="font-size:3rem; margin-bottom:1rem;">🎉</div>
+                            <h3 style="color:white; margin-bottom:1rem;">Tot valorat!</h3>
+                            <p style="color:var(--color-muted3); font-size:0.85rem;">Has repartit els punts correctament. La teva feina aquí ha acabat.</p>
+                        </div>
+                    </div>
+                    <button onclick="window.closeRatingModal();" style="width:100%; margin-top:1.5rem; background:none; border:1px solid #222; color:#555; padding:0.8rem; border-radius:12px; font-weight:700; cursor:pointer;">TANCAR</button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            let currentStep = 0;
+
+            overlay.querySelectorAll('.rating-item').forEach((item, index) => {
+                let selected = 0;
+                const stars = item.querySelectorAll('.stars span');
+                const btn = item.querySelector('.send-rating');
+
+                stars.forEach(s => {
+                    s.onclick = () => {
+                        selected = parseInt(s.dataset.val);
+                        stars.forEach(star => {
+                            star.style.color = parseInt(star.dataset.val) <= selected ? 'var(--color-orange)' : '#333';
+                            star.style.textShadow = parseInt(star.dataset.val) <= selected ? '0 0 10px rgba(255,165,0,0.5)' : 'none';
+                        });
+                        btn.innerText = `ENVIAR (+${selected * 100} PTS)`;
+                        btn.style.background = 'var(--color-orange)';
+                        btn.style.color = 'white';
+                    };
+                });
+
+                btn.onclick = async () => {
+                    if (selected === 0) { alert('Si us plau, selecciona una puntuació (estrelles)'); return; }
+                    const comment = item.querySelector('textarea').value;
+                    btn.disabled = true;
+                    btn.innerText = 'ENVIANT...';
+                    try {
+                        const r = await fetch(`${API_BASE}/ratings`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}` },
+                            body: JSON.stringify({ activityId, recipientId: item.dataset.recipientId, ratingValue: selected, comment })
+                        });
+                        if (r.ok) {
+                            // Pasar al siguiente usuario
+                            item.style.display = 'none';
+                            currentStep++;
+                            if (currentStep < toRate.length) {
+                                document.getElementById(`rating-step-${currentStep}`).style.display = 'block';
+                            } else {
+                                document.getElementById('rating-done').style.display = 'block';
+                            }
+                        } else {
+                            const errData = await r.json();
+                            alert(errData.message || 'Error al enviar valoración');
+                            btn.disabled = false;
+                            btn.innerText = `ENVIAR (+${selected * 100} PTS)`;
+                        }
+                    } catch (err) { 
+                        alert('Error de connexió'); 
+                        btn.disabled = false;
+                    }
+                };
+            });
+
+        } catch (err) {
+            console.error('[DEBUG] Error loading rating modal:', err);
+            alert('Error carregant participants: ' + err.message);
+        }
+    };
+
+    window.closeRatingModal = async function() {
+        const overlay = document.getElementById('rating-overlay');
+        if (overlay) overlay.remove();
+        if (activeChat) {
+            await fetchHistory(activeChat.id);
+        }
+    };
 
     fetchConversations();
 });

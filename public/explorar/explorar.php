@@ -47,6 +47,7 @@ include "../partials/header.php";
     <!-- Modal content injected here -->
 </div>
 
-<script src="script.js"></script>
+<script src="rating.js?v=1.7"></script>
+<script src="script.js?v=1.7"></script>
 
 <?php include "../partials/footer.php"; ?>

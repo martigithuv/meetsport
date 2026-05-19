@@ -4,11 +4,11 @@
 
 .hero {
     position: relative;
-    height: 90vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    overflow: hidden;
+    padding-bottom: 6rem;
 }
 
 .hero-bg {
@@ -130,9 +130,11 @@
 
 .stat-num {
     font-family: var(--font-display);
-    font-size: 2.5rem;
-    line-height: 1;
+    font-size: 2.8rem;
+    line-height: 1.2;
     margin-bottom: 0.2rem;
+    display: block;
+    overflow: visible;
 }
 
 .stat-label {

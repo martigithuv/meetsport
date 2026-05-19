@@ -13,9 +13,10 @@ if ($baseUrl === '/') $baseUrl = '';
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/public/common.css?v=1.1">
+    <link rel="icon" type="image/svg+xml" href="<?php echo $baseUrl; ?>/public/assets/images/favicon.svg">
+    <link rel="stylesheet" href="<?php echo $baseUrl; ?>/public/common.css?v=1.6">
     <?php if (isset($extraCSS)): ?>
-    <link rel="stylesheet" href="<?php echo $extraCSS; ?>?v=1.1">
+    <link rel="stylesheet" href="<?php echo $extraCSS; ?>?v=1.6">
     <?php endif; ?>
 </head>
 <body>
@@ -50,6 +51,7 @@ if ($baseUrl === '/') $baseUrl = '';
             right: 0;
             z-index: 100;
             height: 58px;
+            overflow: hidden;
             background: rgba(6, 6, 8, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);

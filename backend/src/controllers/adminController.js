@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const Activity = require('../models/Activity');
+const Enrollment = require('../models/Enrollment');
+const Message = require('../models/Message');
 
 // @desc    Obtenir tots els usuaris
 // @route   GET /api/admin/users
@@ -18,8 +20,24 @@ exports.getAllUsers = async (req, res) => {
 // @access  Private/Admin
 exports.deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Usuari eliminat' });
+    const userId = req.params.id;
+    
+    // 1. Delete user
+    await User.findByIdAndDelete(userId);
+    
+    // 2. Cascading delete: Remove user's activities
+    await Activity.deleteMany({ creator: userId });
+    
+    // 3. Cascading delete: Remove user's enrollments
+    await Enrollment.deleteMany({ user: userId });
+    
+    // 4. Remove user from all other activities' participants
+    await Activity.updateMany(
+      { participants: userId },
+      { $pull: { participants: userId } }
+    );
+
+    res.json({ success: true, message: 'Usuari i les seves dades eliminats' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar usuari', error: error.message });
   }
@@ -59,8 +77,15 @@ exports.getAllActivities = async (req, res) => {
 // @access  Private/Admin
 exports.deleteActivity = async (req, res) => {
   try {
-    await Activity.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Activitat eliminada' });
+    const activityId = req.params.id;
+    
+    // 1. Delete activity
+    await Activity.findByIdAndDelete(activityId);
+    
+    // 2. Cascading delete: Remove all enrollments for this activity
+    await Enrollment.deleteMany({ activity: activityId });
+    
+    res.json({ success: true, message: 'Activitat i inscripcions eliminades' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar activitat', error: error.message });
   }
@@ -157,5 +182,83 @@ exports.getAdminStats = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al obtenir estadístiques', error: error.message });
+  }
+};
+
+// @desc    Restar punts a un usuari i enviar missatge
+// @route   POST /api/admin/users/deduct-points/:id
+// @access  Private/Admin
+exports.deductPoints = async (req, res) => {
+  try {
+    const { points, comment } = req.body;
+    const userId = req.params.id;
+    const adminId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'Usuari no trobat' });
+
+    // Restar punts (assegurar-se que no baixin de 0 si es vol, però l'usuari no ho ha especificat, així que restem normalment)
+    user.total_points = (user.total_points || 0) - parseInt(points);
+    await user.save();
+
+    // Enviar missatge al xat
+    const message = await Message.create({
+      sender: adminId,
+      recipient: userId,
+      content: `⚠️ NOTIFICACIÓ D'ADMINISTRACIÓ: Has tingut una deducció de ${points} punts pel següent motiu: "${comment}".`
+    });
+
+    // Emissió per socket en temps real
+    const io = req.app.get('io');
+    if (io) {
+      io.to(userId).emit('receive_message', {
+        _id: message._id,
+        senderId: adminId,
+        senderName: 'MeetSport Admin',
+        recipientId: userId,
+        content: message.content,
+        time: message.createdAt
+      });
+    }
+
+    res.json({ success: true, message: 'Punts restats i missatge enviat correctament', newPoints: user.total_points });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al restar punts', error: error.message });
+  }
+};
+
+// @desc    Actualitzar activitat
+// @route   PUT /api/admin/activities/:id
+// @access  Private/Admin
+exports.updateActivity = async (req, res) => {
+  try {
+    const { title, sport, description, date, maxParticipants, level, address, url, status } = req.body;
+    const activity = await Activity.findById(req.params.id);
+    if (!activity) return res.status(404).json({ message: 'Activitat no trobada' });
+    
+    activity.title = title || activity.title;
+    activity.sport = sport || activity.sport;
+    activity.description = description !== undefined ? description : activity.description;
+    activity.date = date || activity.date;
+    activity.maxParticipants = maxParticipants || activity.maxParticipants;
+    activity.level = level || activity.level;
+    activity.status = status || activity.status;
+    
+    if (activity.location) {
+      activity.location.address = address !== undefined ? address : activity.location.address;
+      activity.location.url = url !== undefined ? url : activity.location.url;
+    } else {
+      activity.location = {
+        type: 'Point',
+        coordinates: [2.1734, 41.3851], // BCN default coordinates
+        address: address || '',
+        url: url || ''
+      };
+    }
+    
+    await activity.save();
+    res.json({ success: true, message: 'Activitat actualitzada correctament', activity });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualitzar activitat', error: error.message });
   }
 };

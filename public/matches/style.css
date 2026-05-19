@@ -1,11 +1,19 @@
 .matches-main {
-    height: 100vh;
+    /* Deja que la pÃ¡gina crezca (con header fijo) y permita scroll si hace falta */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 .matches-header {
     padding: 2rem 0 1rem;
+}
+
+/* Asegurar que el contenido del matches queda por encima de cualquier capa accidental */
+.matches-header,
+.matches-container {
+    position: relative;
+    z-index: 2;
 }
 
 .matches-container {
@@ -17,6 +25,8 @@
     width: 100%;
     max-width: 1440px !important; /* Wider for better chat experience */
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .conversations-sidebar {
@@ -62,6 +72,7 @@
     transition: all 0.3s ease;
     border: 1px solid transparent;
     margin-bottom: 0.5rem;
+    position: relative;
 }
 
 .conv-item:hover {
@@ -104,6 +115,30 @@
     text-overflow: ellipsis;
 }
 
+.btn-follow {
+    margin-left: auto;
+    background: rgba(200, 245, 66, 0.15);
+    border: 1px solid rgba(200, 245, 66, 0.25);
+    color: var(--color-lime);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+}
+
+.btn-follow:hover {
+    background: rgba(200, 245, 66, 0.25);
+}
+
+.btn-follow.following {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--color-muted3);
+}
+
 /* Chat Area */
 .chat-area {
     flex: 1;
@@ -114,6 +149,8 @@
     flex-direction: column;
     overflow: hidden;
     min-width: 0; /* Important for flex child */
+    position: relative;
+    z-index: 1;
 }
 
 .no-chat-selected {
@@ -131,6 +168,7 @@
     align-items: center;
     gap: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
 .chat-messages {
@@ -180,6 +218,9 @@
 .chat-input-area {
     padding: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
 }
 
 .input-box {
@@ -189,6 +230,8 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 0.5rem;
+    position: relative;
+    z-index: 6;
 }
 
 .input-box input {
@@ -201,6 +244,7 @@
     padding: 0.8rem 1.2rem;
     font-size: 1rem;
     border-radius: 12px;
+    pointer-events: auto;
 }
 
 .input-box input::placeholder {

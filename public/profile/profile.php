@@ -1,12 +1,12 @@
-<?php 
+<?php
 $pageTitle = "El meu Perfil";
 $extraCSS = "style.css";
-include "../partials/header.php"; 
+include "../partials/header.php";
 ?>
 
 <style>
     /* FORZAR DISEÑO PREMIUM EN FORMULARIO */
-    .form-group input, 
+    .form-group input,
     .form-group textarea {
         width: 100% !important;
         background: rgba(255, 255, 255, 0.05) !important;
@@ -19,16 +19,18 @@ include "../partials/header.php";
         outline: none !important;
         margin-top: 0.5rem !important;
     }
+
     .form-group label {
         color: var(--color-lime) !important;
         font-weight: 800 !important;
         text-transform: uppercase !important;
         font-size: 0.7rem !important;
     }
+
     .settings-card {
         background: #111 !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
     }
 </style>
 
@@ -41,13 +43,18 @@ include "../partials/header.php";
     <div class="container profile-content">
         <div class="profile-header">
             <div class="avatar-section">
-                <div class="avatar-card" id="avatar-card">
-                    <div class="avatar-placeholder">🧑‍🦱</div>
-                    <div class="avatar-hover">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                        <span>Canviar</span>
+                <div class="avatar-controls">
+                    <div class="avatar-card" id="avatar-card">
+                        <div class="avatar-placeholder">🧑‍🦱</div>
+                        <div class="avatar-hover">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                            </svg>
+                            <span>Canviar</span>
+                        </div>
+                        <input type="file" id="avatar-input" hidden accept="image/*">
                     </div>
-                    <input type="file" id="avatar-input" hidden accept="image/*">
+                    <button class="btn-avatar-upload" id="avatar-upload-btn" type="button">Canviar foto</button>
                 </div>
                 <div class="user-info">
                     <div class="name-badge">
@@ -67,6 +74,10 @@ include "../partials/header.php";
                     <div class="stat-val" id="count-following">0</div>
                     <div class="stat-lab">Following</div>
                 </div>
+                <div class="stat-item">
+                    <div class="stat-val" id="count-points">0</div>
+                    <div class="stat-lab">⭐ Punts</div>
+                </div>
                 <div class="stat-item hidden" id="stat-views">
                     <div class="stat-val" id="count-views">0</div>
                     <div class="stat-lab">Visites</div>
@@ -77,8 +88,11 @@ include "../partials/header.php";
         <div class="profile-tabs">
             <button class="tab-btn active" data-tab="dades">Dades</button>
             <button class="tab-btn" data-tab="activitats">Les meves activitats</button>
+            <button class="tab-btn" data-tab="inscripcions">Inscripcions</button>
+            <button class="tab-btn" data-tab="valoracions">Valoracions</button>
             <button class="tab-btn hidden" data-tab="favorits" id="tab-favorits">Preferits</button>
             <button class="tab-btn" data-tab="seguidors">Seguidors</button>
+            <button class="tab-btn hidden" data-tab="visites" id="tab-visites">Visites</button>
         </div>
 
         <div id="tab-pane" class="tab-pane mt-10">
@@ -87,6 +101,6 @@ include "../partials/header.php";
     </div>
 </main>
 
-<script src="script.js"></script>
+<script src="script.js?v=1.9"></script>
 
 <?php include "../partials/footer.php"; ?>

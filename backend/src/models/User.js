@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     viewedAt: { type: Date, default: Date.now }
   }],
+  total_points: { type: Number, default: 0 },
+  enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Enrollment' }],
+  badges: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBadge' }],
+  valoracions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
   isVerified: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false }
 }, { timestamps: true });

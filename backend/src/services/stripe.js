@@ -23,8 +23,8 @@ exports.createCheckoutSession = async (userId) => {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.FRONTEND_URL}/profile?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/premium`,
+      success_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/explore?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/premium?payment=canceled`,
       client_reference_id: userId.toString(),
     });
 
@@ -47,8 +47,17 @@ exports.webhookHandler = async (req, res) => {
   // Manejar el evento
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    // Lógica para actualizar el usuario a Premium en DB usando session.client_reference_id
-    console.log(`Usuario ${session.client_reference_id} es ahora premium!`);
+    const userId = session.client_reference_id;
+    
+    if (userId) {
+      try {
+        const User = require('../models/User');
+        await User.findByIdAndUpdate(userId, { isPremium: true });
+        console.log(`Usuario ${userId} es ahora premium y las ganancias se han actualizado!`);
+      } catch (error) {
+        console.error('Error al actualizar usuario a premium:', error);
+      }
+    }
   }
 
   res.send();

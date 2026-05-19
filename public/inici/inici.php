@@ -122,6 +122,6 @@ include "../partials/header.php";
     </section>
 </main>
 
-<script src="script.js"></script>
+<script src="script.js?v=1.1"></script>
 
 <?php include "../partials/footer.php"; ?>

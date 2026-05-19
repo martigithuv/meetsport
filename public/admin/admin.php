@@ -21,112 +21,40 @@ include "../partials/header.php";
         <!-- Content will be injected here -->
         <div class="loader"><div class="spinner"></div></div>
     </div>
+
+    <!-- Modal Deducció de Punts -->
+    <div id="deduct-modal" class="modal-overlay hidden">
+        <div class="modal-content animate-pop-in">
+            <h2 class="font-display mb-4">RESTAR <span class="text-orange">PUNTS</span></h2>
+            <div id="deduct-user-info" class="mb-4 text-muted3"></div>
+            
+            <form id="deduct-form">
+                <input type="hidden" id="deduct-user-id">
+                <div class="form-group mb-4">
+                    <label class="label-small">Punts totals actuals</label>
+                    <div id="current-points-display" style="font-size: 1.5rem; font-weight: 800; color: var(--color-lime);">0</div>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label class="label-small">Punts a restar</label>
+                    <input type="number" id="points-to-deduct" class="input-dark" placeholder="Ex: 50" required min="1">
+                </div>
+                
+                <div class="form-group mb-6">
+                    <label class="label-small">Motiu / Comentari</label>
+                    <textarea id="deduct-comment" class="input-dark" style="min-height: 100px; padding: 12px;" placeholder="Explica el motiu de la deducció..." required></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="btn-secondary flex-1" onclick="closeDeductModal()">Cancel·lar</button>
+                    <button type="submit" class="btn-primary flex-1" style="background: var(--color-orange); border-color: var(--color-orange);">Restar Punts</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
-
-<style>
-    .admin-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 2rem;
-    }
-
-    .tabs-selector {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 16px;
-        padding: 4px;
-        display: flex;
-    }
-
-    .tab-btn {
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-muted3);
-    }
-
-    .tab-btn.active {
-        background: var(--color-lime);
-        color: var(--color-dark);
-        box-shadow: 0 4px 12px rgba(200, 245, 66, 0.2);
-    }
-
-    .admin-table {
-        width: 100%;
-        background: var(--color-dark2);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 32px;
-        overflow: hidden;
-        border-collapse: collapse;
-    }
-
-    .admin-table th {
-        background: rgba(255, 255, 255, 0.03);
-        padding: 1.5rem;
-        text-align: left;
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        color: var(--color-muted3);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .admin-table td {
-        padding: 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        font-size: 0.9rem;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-
-    .stat-card {
-        background: var(--color-dark2);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 32px;
-        padding: 2.5rem;
-    }
-
-    .charts-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-    }
-
-    .chart-container {
-        background: var(--color-dark2);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 32px;
-        padding: 2.5rem;
-    }
-
-    .btn-action {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 0.5rem;
-        transition: all 0.3s ease;
-    }
-
-    .btn-delete { background: rgba(255, 75, 75, 0.1); color: #ff4b4b; }
-    .btn-block { background: rgba(255, 255, 255, 0.05); color: var(--color-muted3); }
-    
-    .btn-delete:hover { background: #ff4b4b; color: white; }
-    .btn-block:hover { background: var(--color-lime); color: var(--color-dark); }
-</style>
+<script src="script.js?v=1.1"></script>
 
 <?php include "../partials/footer.php"; ?>
