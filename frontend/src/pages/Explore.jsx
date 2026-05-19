@@ -4,11 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import { Search, Plus, MapPin, Users, Calendar, Trophy, Info, ExternalLink, ChevronDown, ChevronUp, X, Check, ShieldCheck } from 'lucide-react';
 import ActivityCard from '../components/activity/ActivityCard';
 import Modal from '../components/ui/Modal';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Explore = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -22,7 +23,27 @@ const Explore = () => {
 
   useEffect(() => {
     fetchActivities();
-  }, []);
+
+    // Comprovar si venim de Stripe (pagament completat)
+    const queryParams = new URLSearchParams(location.search);
+    if (queryParams.get('payment') === 'success') {
+      const processUpgrade = async () => {
+        try {
+          // Forcem l'actualització de l'usuari a la base de dades
+          await api.post('/users/upgrade');
+          // Actualitzem l'estat local perquè l'interfície canviï a l'instant
+          updateUser({ isPremium: true });
+          alert('🎉 Felicitats! Pagament completat correctament. Ara ets usuari VIP Premium!');
+          
+          // Netejar la URL perquè no torni a saltar si refresca la pàgina
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (error) {
+          console.error('Error al processar el pagament Premium:', error);
+        }
+      };
+      processUpgrade();
+    }
+  }, [location.search]);
 
   const fetchActivities = async () => {
     setLoading(true);
