@@ -23,6 +23,38 @@ exports.getMe = async (req, res) => {
   }
 };
 
+// @desc    Obtenir el perfil públic d'un altre usuari
+// @route   GET /api/users/:id/profile
+// @access  Private
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .select('name email profileDetails isPremium total_points followers following')
+      .lean();
+      
+    if (!user) return res.status(404).json({ message: 'Usuari no trobat' });
+
+    // També necessitem saber quantes activitats ha publicat per a la medalla d'organitzador
+    const Activity = require('../models/Activity');
+    const publishedActivitiesCount = await Activity.countDocuments({ creator: user._id });
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isPremium: user.isPremium,
+      avatar: user.profileDetails?.avatar,
+      bio: user.profileDetails?.bio,
+      total_points: user.total_points || 0,
+      followersCount: user.followers?.length || 0,
+      followingCount: user.following?.length || 0,
+      publishedActivitiesCount
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtenir perfil', error: error.message });
+  }
+};
+
 // @desc    Actualizar a Premium manualmente (útil para saltarse Stripe webhook)
 // @route   POST /api/users/upgrade
 // @access  Private

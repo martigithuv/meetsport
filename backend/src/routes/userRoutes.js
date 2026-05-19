@@ -12,12 +12,14 @@ const {
   toggleFavorite,
   getFavorites,
   getMe,
+  getUserProfile,
   upgradeToPremium,
   cancelPremium,
   triggerBadgeNotification
 } = require('../controllers/userController');
 
 router.get('/me', protect, getMe);
+router.get('/:id/profile', protect, getUserProfile);
 router.post('/upgrade', protect, upgradeToPremium);
 router.post('/cancel-premium', protect, cancelPremium);
 router.get('/search', protect, searchUsers);
