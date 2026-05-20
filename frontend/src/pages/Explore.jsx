@@ -719,7 +719,7 @@ const Explore = () => {
                 {/* Enrollment button */}
                 <div className="shrink-0 flex justify-center mt-3">
                   {selectedActivity.participants?.includes(user?._id) ? (
-                    <div className="w-[96%] py-3.5 px-6 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
+                    <div className="w-full py-4 px-6 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-lime/15 flex items-center justify-center text-lime shrink-0">
                           <ShieldCheck size={18} strokeWidth={2.5} />
@@ -737,7 +737,7 @@ const Explore = () => {
                     <button 
                       onClick={() => handleJoin(selectedActivity._id)}
                       disabled={selectedActivity.isFull}
-                      className={`w-[96%] py-3.5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
+                      className={`w-full py-4 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
                     >
                       <Plus size={18} strokeWidth={3} />
                       FER INSCRIPCIÓ
