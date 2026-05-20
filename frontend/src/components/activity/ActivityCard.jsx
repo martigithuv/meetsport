@@ -38,10 +38,10 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
       {/* Left Accent Bar */}
       <div className={`w-1.5 h-full absolute left-0 top-0 z-10 transition-all duration-300 ${isFinished ? 'bg-red-500' : 'bg-lime group-hover:w-3'}`}></div>
       
-      {/* Star Icon - Top Left - Visible for premium users only */}
+      {/* Star Icon - Right side - Visible for premium users only */}
       {isPremium && (
         <button 
-          className={`absolute top-3 left-5 z-20 p-2.5 rounded-xl transition-all duration-300 ${isFavorite ? 'bg-orange/25 text-orange shadow-lg shadow-orange/20' : 'bg-white/5 text-white/30 hover:bg-white/15'}`} 
+          className={`absolute top-10 right-4 z-20 p-2.5 rounded-xl transition-all duration-300 ${isFavorite ? 'bg-orange/25 text-orange shadow-lg shadow-orange/20' : 'bg-white/5 text-white/30 hover:bg-white/15'}`} 
           onClick={(e) => {
             e.stopPropagation();
             onToggleFavorite(activity._id);
