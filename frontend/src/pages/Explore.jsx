@@ -260,11 +260,11 @@ const Explore = () => {
 
         <div className="flex flex-col sm:flex-row gap-5 w-full justify-center max-w-4xl">
           <div className="relative group flex-1">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted3 group-focus-within:text-lime transition-colors" size={22} />
+            <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-muted3 group-focus-within:text-lime transition-colors" size={24} />
             <input 
               type="text" 
               placeholder={searchMode === 'activities' ? "Cerca per títol o esport..." : "Cerca usuaris per nom o email..."} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-16 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-24 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
