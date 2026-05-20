@@ -588,12 +588,12 @@ const Explore = () => {
       </div>
 
       {/* REFINED PREMIUM MODAL */}
-      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="800px">
+      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="1050px">
         {selectedActivity && (
           <div className="activity-modal-premium-final p-0 overflow-hidden font-display bg-[#0c0c10] rounded-[32px] border border-white/10 shadow-2xl relative">
             
             {/* Header */}
-            <div className="relative h-[180px] flex items-end p-6 overflow-hidden">
+            <div className="relative h-[130px] flex items-end p-6 md:px-8 overflow-hidden">
               {selectedActivity.images?.[0] ? (
                 <img src={selectedActivity.images[0]} className="absolute inset-0 w-full h-full object-cover scale-110 blur-[1px] opacity-25" alt="BG" />
               ) : (
@@ -604,23 +604,23 @@ const Explore = () => {
               <div className="relative z-10 w-full flex justify-between items-end">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="px-4 py-1 bg-lime text-dark text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg shadow-lime/15">
+                    <span className="px-3 py-1 bg-lime text-dark text-[9px] font-black uppercase tracking-widest rounded-md shadow-lg shadow-lime/15">
                       {selectedActivity.sport}
                     </span>
-                    <span className={`px-4 py-1 border text-[9px] font-black uppercase tracking-widest rounded-lg ${selectedActivity.isFull ? 'border-orange text-orange' : 'border-lime/20 text-lime'}`}>
+                    <span className={`px-3 py-1 border text-[9px] font-black uppercase tracking-widest rounded-md ${selectedActivity.isFull ? 'border-orange text-orange' : 'border-lime/20 text-lime'}`}>
                       {selectedActivity.isFull ? 'COMPLET' : 'OBERT'}
                     </span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-black tracking-tight leading-tight text-white uppercase italic">{selectedActivity.title}</h2>
+                  <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight text-white uppercase italic">{selectedActivity.title}</h2>
                 </div>
               </div>
             </div>
 
             {/* Content body */}
-            <div className="p-6 pt-2 grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="p-6 md:px-8 md:pb-8 pt-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
               
               {/* Left Column: Details & Address */}
-              <div className="md:col-span-7 flex flex-col gap-6">
+              <div className="lg:col-span-7 flex flex-col justify-between gap-6">
                 <div>
                   <h4 className="text-[10px] font-black uppercase tracking-[0.25em] text-lime mb-3 flex items-center gap-2">
                     <Info size={16} /> Detalls de l'experiència
@@ -630,85 +630,85 @@ const Explore = () => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
                   {/* Date box */}
-                  <div className="flex items-center gap-3.5 p-4 bg-white/[0.02] rounded-2xl border border-white/5">
+                  <div className="flex items-center gap-3.5 p-3.5 bg-white/[0.02] rounded-2xl border border-white/5">
                     <div className="w-10 h-10 rounded-xl bg-lime/10 flex items-center justify-center text-lime shrink-0">
                       <Calendar size={20} />
                     </div>
                     <div>
                       <span className="text-[8px] font-black tracking-widest text-muted3 block uppercase">HORARI</span>
-                      <span className="text-xs font-bold block text-white">{new Date(selectedActivity.date).toLocaleDateString()}</span>
-                      <span className="text-xs font-black text-lime">{new Date(selectedActivity.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span className="text-[11px] font-bold block text-white">{new Date(selectedActivity.date).toLocaleDateString()}</span>
+                      <span className="text-[11px] font-black text-lime">{new Date(selectedActivity.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                   </div>
                   
                   {/* Location box */}
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-3.5 p-4 bg-white/[0.02] rounded-2xl border border-white/5">
+                    <div className="flex items-center gap-3.5 p-3.5 bg-white/[0.02] rounded-2xl border border-white/5">
                       <div className="w-10 h-10 rounded-xl bg-orange/10 flex items-center justify-center text-orange shrink-0">
                         <MapPin size={20} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <span className="text-[8px] font-black tracking-widest text-muted3 block uppercase">UBICACIÓ</span>
-                        <span className="text-xs font-bold block truncate text-white">{selectedActivity.location?.address || 'Barcelona'}</span>
+                        <span className="text-[11px] font-bold block truncate text-white">{selectedActivity.location?.address || 'Barcelona'}</span>
                       </div>
                     </div>
                     <button 
                       onClick={() => handleOpenMaps(selectedActivity.location?.url, selectedActivity.location?.address)}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-orange/10 hover:bg-orange text-orange hover:text-white border border-orange/20 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all"
+                      className="w-full flex items-center justify-center gap-2 py-2.5 bg-orange/10 hover:bg-orange text-orange hover:text-white border border-orange/20 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all"
                     >
-                      <ExternalLink size={14} /> Maps
+                      <ExternalLink size={14} /> Veure a Maps
                     </button>
                   </div>
                 </div>
               </div>
 
               {/* Right Column: Places, Participants & Join Action */}
-              <div className="md:col-span-5 flex flex-col gap-5 justify-between">
+              <div className="lg:col-span-5 flex flex-col gap-4 justify-between">
                 
                 {/* Places Card */}
-                <div className="bg-[#121217] p-6 rounded-[28px] border border-white/5 shadow-xl flex flex-col justify-between flex-1">
-                  <div className="flex justify-between items-center mb-4">
+                <div className="bg-[#121217] p-5 rounded-[24px] border border-white/5 shadow-xl flex flex-col flex-1">
+                  <div className="flex justify-between items-center mb-3">
                     <div>
                       <span className="text-[9px] font-black tracking-widest text-muted3 block uppercase mb-1">PLACES DISPONIBLES</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-black text-white leading-none">
+                        <span className="text-4xl font-black text-white leading-none">
                           {selectedActivity.participants?.length || 0}
                         </span>
-                        <span className="text-lg font-bold text-muted3">
+                        <span className="text-base font-bold text-muted3">
                           /{selectedActivity.maxParticipants}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mt-auto">
                     <button 
                       onClick={() => setShowParticipants(!showParticipants)}
-                      className={`w-full flex items-center justify-between p-3.5 rounded-xl border transition-all duration-300 ${showParticipants ? 'bg-lime text-dark border-lime' : 'bg-white/5 text-white border-white/10 hover:bg-white/10'}`}
+                      className={`w-full flex items-center justify-between p-3 rounded-xl border transition-all duration-300 ${showParticipants ? 'bg-lime text-dark border-lime' : 'bg-white/5 text-white border-white/10 hover:bg-white/10'}`}
                     >
                       <div className="flex items-center gap-2">
                         <Users size={16} />
                         <span className="text-[9px] font-black uppercase tracking-[0.15em]">Participants</span>
                       </div>
                       <div className={`transition-transform duration-300 ${showParticipants ? 'rotate-180' : ''}`}>
-                        <ChevronDown size={18} />
+                        <ChevronDown size={16} />
                       </div>
                     </button>
 
-                    <div className={`transition-all duration-300 ease-in-out overflow-hidden ${showParticipants ? 'max-h-[160px] opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+                    <div className={`transition-all duration-300 ease-in-out overflow-hidden ${showParticipants ? 'max-h-[100px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
                       {showParticipants && (
-                        <div className="grid grid-cols-1 gap-2 max-h-[140px] overflow-y-auto custom-scrollbar pr-1">
+                        <div className="grid grid-cols-2 gap-2 max-h-[100px] overflow-y-auto custom-scrollbar pr-1">
                           {participantsList.length > 0 ? participantsList.map((p, idx) => (
-                            <div key={`${p._id || idx}-${idx}`} className="flex items-center gap-3 p-3 bg-white/[0.02] rounded-xl border border-white/5 hover:border-lime/20 transition-all">
-                              <div className="w-8 h-8 rounded-lg bg-lime/10 flex items-center justify-center text-lime font-black text-xs shrink-0">
+                            <div key={`${p._id || idx}-${idx}`} className="flex items-center gap-2 p-2 bg-white/[0.02] rounded-lg border border-white/5">
+                              <div className="w-6 h-6 rounded-md bg-lime/10 flex items-center justify-center text-lime font-black text-[10px] shrink-0">
                                 {p.name?.[0].toUpperCase()}
                               </div>
-                              <span className="text-xs font-bold text-light/95 truncate">{p.name}</span>
+                              <span className="text-[10px] font-bold text-light/95 truncate">{p.name}</span>
                             </div>
                           )) : (
-                            <p className="text-[10px] text-muted3 text-center py-6 opacity-30 italic font-medium">Cap participant encara.</p>
+                            <p className="col-span-2 text-[10px] text-muted3 text-center py-4 opacity-30 italic font-medium">Cap participant encara.</p>
                           )}
                         </div>
                       )}
@@ -719,23 +719,25 @@ const Explore = () => {
                 {/* Enrollment button */}
                 <div className="shrink-0">
                   {selectedActivity.participants?.includes(user?._id) ? (
-                    <div className="w-full py-5 bg-white/5 border border-white/10 rounded-2xl text-center flex flex-col items-center justify-center gap-1.5 shadow-inner">
-                      <div className="w-9 h-9 rounded-full bg-lime/15 flex items-center justify-center text-lime shrink-0">
-                        <ShieldCheck size={20} strokeWidth={2.5} />
+                    <div className="w-full py-3 px-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-lime/15 flex items-center justify-center text-lime shrink-0">
+                          <ShieldCheck size={18} strokeWidth={2.5} />
+                        </div>
+                        <span className="text-[10px] font-black text-white uppercase tracking-[0.15em]">Inscrit</span>
                       </div>
-                      <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">JA ESTÀS INSCRIT</span>
                       <button 
                         onClick={() => { setSelectedActivity(null); navigate('/profile'); }} 
                         className="text-[9px] font-black text-lime hover:underline cursor-pointer border-none bg-transparent"
                       >
-                        VEURE LES MEVES INSCRIPCIONS
+                        VEURE AL PERFIL
                       </button>
                     </div>
                   ) : (
                     <button 
                       onClick={() => handleJoin(selectedActivity._id)}
                       disabled={selectedActivity.isFull}
-                      className={`w-full py-4.5 rounded-2xl font-black text-sm uppercase tracking-[0.3em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
+                      className={`w-full py-3.5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
                     >
                       <Plus size={18} strokeWidth={3} />
                       FER INSCRIPCIÓ
