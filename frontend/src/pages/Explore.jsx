@@ -723,9 +723,9 @@ const Explore = () => {
       </Modal>
 
       {/* NEW MODAL: USER PROFILE PUBLIC VIEW */}
-      <Modal isOpen={!!selectedUserProfile} onClose={() => setSelectedUserProfile(null)} maxWidth="600px">
+      <Modal isOpen={!!selectedUserProfile} onClose={() => setSelectedUserProfile(null)} maxWidth="500px">
         {selectedUserProfile && (
-          <div className="p-8 md:p-10 bg-[#0c0c10] rounded-[32px] border border-white/10 relative overflow-hidden flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center mt-2 relative z-10">
             {selectedUserProfile.loading ? (
               <div className="py-20 flex flex-col items-center">
                 <div className="w-12 h-12 border-4 border-lime/20 border-t-lime rounded-full animate-spin mb-4"></div>
@@ -733,20 +733,21 @@ const Explore = () => {
               </div>
             ) : (
               <>
-                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-lime/10 to-transparent"></div>
+                {/* Background glow behind avatar */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-lime/10 to-transparent -z-10 rounded-t-[28px] pointer-events-none"></div>
                 
                 {/* Header */}
-                <div className="relative z-10 w-full flex flex-col items-center">
+                <div className="relative z-20 w-full flex flex-col items-center pt-4">
                   <div className="relative mb-5">
                     {selectedUserProfile.avatar ? (
-                      <img src={selectedUserProfile.avatar} alt={selectedUserProfile.name} className="w-32 h-32 rounded-full object-cover border-4 border-[#0c0c10] shadow-2xl" />
+                      <img src={selectedUserProfile.avatar} alt={selectedUserProfile.name} className="w-32 h-32 rounded-full object-cover border-4 border-[#111116] shadow-2xl" />
                     ) : (
-                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-lime/20 to-lime/5 border-4 border-[#0c0c10] shadow-2xl flex items-center justify-center">
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-lime/20 to-lime/5 border-4 border-[#111116] shadow-2xl flex items-center justify-center">
                         <User size={48} className="text-lime/50" />
                       </div>
                     )}
                     {selectedUserProfile.isPremium && (
-                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-lime to-[#a3e635] text-dark text-[10px] font-black uppercase tracking-[0.2em] py-1.5 px-4 rounded-full shadow-lg shadow-lime/20 border border-[#0c0c10] whitespace-nowrap">
+                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-lime to-[#a3e635] text-dark text-[10px] font-black uppercase tracking-[0.2em] py-1.5 px-4 rounded-full shadow-lg shadow-lime/20 border border-[#111116] whitespace-nowrap">
                         Premium
                       </div>
                     )}
@@ -754,22 +755,22 @@ const Explore = () => {
                   
                   <h2 className="text-3xl font-black text-white tracking-tight">{selectedUserProfile.name}</h2>
                   {selectedUserProfile.bio && (
-                    <p className="text-sm text-muted3 mt-3 italic font-medium max-w-md">"{selectedUserProfile.bio}"</p>
+                    <p className="text-sm text-muted3 mt-3 italic font-medium max-w-sm mx-auto">"{selectedUserProfile.bio}"</p>
                   )}
                   
                   {/* Basic Stats */}
-                  <div className="flex items-center gap-6 mt-6 bg-white/5 p-4 rounded-2xl border border-white/5 w-full justify-center">
-                    <div className="text-center">
+                  <div className="flex items-center gap-4 sm:gap-8 mt-8 bg-white/5 p-4 rounded-2xl border border-white/5 w-full justify-center">
+                    <div className="text-center flex-1">
                       <div className="text-2xl font-black text-white">{selectedUserProfile.followersCount}</div>
                       <div className="text-[9px] font-black text-muted3 tracking-[0.2em] uppercase mt-1">Seguidors</div>
                     </div>
                     <div className="w-px h-8 bg-white/10"></div>
-                    <div className="text-center">
+                    <div className="text-center flex-1">
                       <div className="text-2xl font-black text-lime">{selectedUserProfile.total_points}</div>
                       <div className="text-[9px] font-black text-lime/70 tracking-[0.2em] uppercase mt-1">Punts</div>
                     </div>
                     <div className="w-px h-8 bg-white/10"></div>
-                    <div className="text-center">
+                    <div className="text-center flex-1">
                       <div className="text-2xl font-black text-white">{selectedUserProfile.publishedActivitiesCount}</div>
                       <div className="text-[9px] font-black text-muted3 tracking-[0.2em] uppercase mt-1">Activitats</div>
                     </div>
@@ -782,8 +783,8 @@ const Explore = () => {
                       
                       {/* Medal */}
                       <div className={`p-4 rounded-2xl border flex flex-col items-center text-center gap-3 transition-all duration-300 ${selectedUserProfile.publishedActivitiesCount >= 30 ? 'bg-orange/10 border-orange/30' : 'bg-white/5 border-white/5 grayscale opacity-50'}`}>
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center ${selectedUserProfile.publishedActivitiesCount >= 30 ? 'bg-orange/20 text-orange shadow-[0_0_20px_rgba(255,107,43,0.3)]' : 'bg-white/10 text-white'}`}>
-                          <Award size={24} />
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${selectedUserProfile.publishedActivitiesCount >= 30 ? 'bg-orange/20 text-orange shadow-[0_0_20px_rgba(255,107,43,0.3)]' : 'bg-white/10 text-white'}`}>
+                          <Award size={20} />
                         </div>
                         <div>
                           <div className={`text-[10px] font-black tracking-widest uppercase mb-1 ${selectedUserProfile.publishedActivitiesCount >= 30 ? 'text-orange' : 'text-white/60'}`}>Organitzador</div>
@@ -793,8 +794,8 @@ const Explore = () => {
 
                       {/* Star */}
                       <div className={`p-4 rounded-2xl border flex flex-col items-center text-center gap-3 transition-all duration-300 ${selectedUserProfile.total_points >= 8000 ? 'bg-lime/10 border-lime/30' : 'bg-white/5 border-white/5 grayscale opacity-50'}`}>
-                        <div className={`w-14 h-14 rounded-full flex items-center justify-center ${selectedUserProfile.total_points >= 8000 ? 'bg-lime/20 text-lime shadow-[0_0_20px_rgba(200,245,66,0.3)]' : 'bg-white/10 text-white'}`}>
-                          <Trophy size={24} />
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${selectedUserProfile.total_points >= 8000 ? 'bg-lime/20 text-lime shadow-[0_0_20px_rgba(200,245,66,0.3)]' : 'bg-white/10 text-white'}`}>
+                          <Trophy size={20} />
                         </div>
                         <div>
                           <div className={`text-[10px] font-black tracking-widest uppercase mb-1 ${selectedUserProfile.total_points >= 8000 ? 'text-lime' : 'text-white/60'}`}>Estrella</div>

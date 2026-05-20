@@ -511,6 +511,7 @@ select {
   border-radius: 8px;
   padding: 4px;
   cursor: pointer;
+  z-index: 50;
 }
 
 .close-modal:hover {
