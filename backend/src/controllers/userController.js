@@ -48,7 +48,8 @@ exports.getUserProfile = async (req, res) => {
       total_points: user.total_points || 0,
       followersCount: user.followers?.length || 0,
       followingCount: user.following?.length || 0,
-      publishedActivitiesCount
+      publishedActivitiesCount,
+      isFollowing: user.followers?.some(id => id.toString() === req.user._id.toString()) || false
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al obtenir perfil', error: error.message });

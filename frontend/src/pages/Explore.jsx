@@ -91,19 +91,42 @@ const Explore = () => {
 
   const handleOpenUserProfile = async (userId) => {
     try {
-      // Obre modal de càrrega
       setSelectedUserProfile({ _id: userId, loading: true });
-      
-      // Registra la visita de forma asíncrona (si és Premium ho guardarà al backend)
       api.post(`/users/view/${userId}`).catch(e => console.error(e));
-
-      // Descarrega el perfil sencer (punts i activitats incloses)
       const response = await api.get(`/users/${userId}/profile`);
       setSelectedUserProfile(response.data);
     } catch (err) {
       console.error(err);
       alert('Error al carregar el perfil de l\'usuari');
       setSelectedUserProfile(null);
+    }
+  };
+
+  // NOU: Funció per seguir / deixar de seguir
+  const handleToggleFollow = async (userId) => {
+    try {
+      // Optimizació UI (optimistic update)
+      const isFollowing = selectedUserProfile.isFollowing;
+      setSelectedUserProfile(prev => ({
+        ...prev,
+        isFollowing: !isFollowing,
+        followersCount: isFollowing ? prev.followersCount - 1 : prev.followersCount + 1
+      }));
+
+      if (isFollowing) {
+        await api.post(`/users/unfollow/${userId}`);
+      } else {
+        await api.post(`/users/follow/${userId}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error al actualitzar seguidor');
+      // Revertir si falla
+      setSelectedUserProfile(prev => ({
+        ...prev,
+        isFollowing: !prev.isFollowing,
+        followersCount: prev.isFollowing ? prev.followersCount - 1 : prev.followersCount + 1
+      }));
     }
   };
 
@@ -756,6 +779,20 @@ const Explore = () => {
                   <h2 className="text-3xl font-black text-white tracking-tight">{selectedUserProfile.name}</h2>
                   {selectedUserProfile.bio && (
                     <p className="text-sm text-muted3 mt-3 italic font-medium max-w-sm mx-auto">"{selectedUserProfile.bio}"</p>
+                  )}
+                  
+                  {/* Follow Button */}
+                  {selectedUserProfile._id !== user?._id && (
+                    <button
+                      onClick={() => handleToggleFollow(selectedUserProfile._id)}
+                      className={`mt-6 px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border ${
+                        selectedUserProfile.isFollowing 
+                          ? 'bg-white/10 text-white border-white/20 hover:bg-white/20' 
+                          : 'bg-lime text-dark border-lime shadow-[0_0_20px_rgba(200,245,66,0.3)] hover:scale-105'
+                      }`}
+                    >
+                      {selectedUserProfile.isFollowing ? 'Deixar de seguir' : 'Seguir'}
+                    </button>
                   )}
                   
                   {/* Basic Stats */}
