@@ -192,9 +192,12 @@ const Explore = () => {
   const handleJoin = async (id) => {
     try {
       await api.post(`/enrollments/${id}`);
-      showToast('T\'has inscrit correctament! Ara pots veure aquesta activitat al teu perfil (Inscripcions).');
       setSelectedActivity(null);
       fetchActivities();
+      // Delay perquè l'usuari vegi el toast un cop el modal s'ha tancat
+      setTimeout(() => {
+        showToast('T\'has inscrit correctament! Ara pots veure aquesta activitat al teu perfil (Inscripcions).');
+      }, 300);
     } catch (err) {
       showToast(err.response?.data?.message || 'Error en apuntar-te', 'error');
     }
