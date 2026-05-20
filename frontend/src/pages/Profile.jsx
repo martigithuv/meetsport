@@ -6,6 +6,7 @@ import {
   Users as UsersIcon, LogOut, ShieldCheck,
   MapPin, Calendar, X, Check, Trash2
 } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 /* ── Helpers ── */
 const UserChip = ({ u }) => (
@@ -35,6 +36,7 @@ const EmptyState = ({ icon, text }) => (
 /* ── Main Component ── */
 const Profile = () => {
   const { user, logout, updateUser } = useAuth();
+  const { showToast } = useToast();
 
   const [activeTab, setActiveTab]       = useState('dades');
   const [stats, setStats]               = useState(null);
@@ -144,7 +146,7 @@ const Profile = () => {
         setRatingValue(5);
         setRatingComment('');
       } else {
-        alert('No hi ha altres participants per valorar en aquesta activitat!');
+        showToast('No hi ha altres participants per valorar en aquesta activitat!', 'info');
       }
     } catch (err) {
       console.error(err);
@@ -169,7 +171,7 @@ const Profile = () => {
       
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || 'Error al finalitzar l\'activitat');
+      showToast(err.response?.data?.message || 'Error al finalitzar l\'activitat', 'error');
     } finally {
       setTabLoading(false);
     }
@@ -199,7 +201,7 @@ const Profile = () => {
         setRatingValue(5);
         setRatingComment('');
       } else {
-        alert('Totes les valoracions s\'han enviat correctament! Moltes gràcies.');
+        showToast('Totes les valoracions s\'han enviat correctament! Moltes gràcies.', 'success');
         setRatingFlow({ isOpen: false, activityId: null, participants: [], currentIndex: 0 });
         
         // Refresh base user stats & ratings list if open
@@ -214,7 +216,7 @@ const Profile = () => {
       }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || 'Error al enviar la valoració');
+      showToast(err.response?.data?.message || 'Error al enviar la valoració', 'error');
     } finally {
       setSubmittingRating(false);
     }
@@ -225,17 +227,17 @@ const Profile = () => {
     if (changingPassword) return;
 
     if (!newPassword || !repeatPassword) {
-      alert('Tots els camps són obligatoris');
+      showToast('Tots els camps són obligatoris', 'warning');
       return;
     }
 
     if (newPassword !== repeatPassword) {
-      alert('Hi ha hagut un error, torna-ho a intentar');
+      showToast('Hi ha hagut un error, torna-ho a intentar', 'error');
       return;
     }
 
     if (newPassword.length < 6) {
-      alert('La contrasenya ha de tenir almenys 6 caràcters');
+      showToast('La contrasenya ha de tenir almenys 6 caràcters', 'warning');
       return;
     }
 
@@ -245,13 +247,13 @@ const Profile = () => {
         newPassword,
         confirmPassword: repeatPassword
       });
-      alert('S\'ha canviat la contrasenya correctament');
+      showToast('S\'ha canviat la contrasenya correctament', 'success');
       setIsPasswordModalOpen(false);
       setNewPassword('');
       setRepeatPassword('');
     } catch (err) {
       console.error(err);
-      alert('Hi ha hagut un error, torna-ho a intentar');
+      showToast('Hi ha hagut un error, torna-ho a intentar', 'error');
     } finally {
       setChangingPassword(false);
     }
@@ -283,10 +285,10 @@ const Profile = () => {
     e.preventDefault();
     try {
       await api.put('/users/profile', profileData);
-      alert('Perfil actualitzat correctament!');
+      showToast('Perfil actualitzat correctament!', 'success');
       fetchStats();
     } catch (err) { 
-      alert(err.response?.data?.message || 'Error al actualitzar el perfil'); 
+      showToast(err.response?.data?.message || 'Error al actualitzar el perfil', 'error'); 
     }
   };
 
@@ -298,7 +300,7 @@ const Profile = () => {
       try {
         await api.put('/users/profile', { avatar: ev.target.result });
         fetchStats();
-      } catch { alert("Error pujant l'avatar"); }
+      } catch { showToast("Error pujant l'avatar", 'error'); }
     };
     reader.readAsDataURL(file);
   };
@@ -310,10 +312,10 @@ const Profile = () => {
       // Use both possible IDs if one fails, but backend should accept activityId
       await api.delete(`/enrollments/${activityId}`);
       setEnrollments(prev => prev.filter(e => e._id !== activityId));
-      alert('Inscripció cancel·lada correctament');
+      showToast('Inscripció cancel·lada correctament', 'success');
     } catch (err) {
       console.error("Cancel error:", err);
-      alert(err.response?.data?.message || 'Error cancel·lant la inscripció');
+      showToast(err.response?.data?.message || 'Error cancel·lant la inscripció', 'error');
     }
   };
 
@@ -325,9 +327,9 @@ const Profile = () => {
       const newFavorites = (user.favorites || []).filter(favId => favId !== activityId);
       updateUser({ favorites: newFavorites });
       
-      alert("L'activitat s'ha eliminat de preferits");
+      showToast("L'activitat s'ha eliminat de preferits", 'success');
     } catch { 
-      alert('Error eliminant de preferits'); 
+      showToast('Error eliminant de preferits', 'error'); 
     }
   };
 

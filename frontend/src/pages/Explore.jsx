@@ -5,6 +5,7 @@ import { Search, Plus, MapPin, Users, Calendar, Trophy, Info, ExternalLink, Chev
 import ActivityCard from '../components/activity/ActivityCard';
 import Modal from '../components/ui/Modal';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
 
 const Explore = () => {
   const { user, updateUser } = useAuth();
@@ -26,13 +27,7 @@ const Explore = () => {
   const [usersList, setUsersList] = useState([]);
   const [searchingUsers, setSearchingUsers] = useState(false);
   const [selectedUserProfile, setSelectedUserProfile] = useState(null);
-
-  // Toast notification (substitueix els alerts)
-  const [toast, setToast] = useState(null); // { message, type: 'success' | 'error' }
-  const showToast = (message, type = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 4500);
-  };
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchActivities();
@@ -886,75 +881,6 @@ const Explore = () => {
           .activities-responsive-grid {
             grid-template-columns: repeat(3, minmax(380px, 460px));
           }
-        }
-      `}</style>
-
-      {/* TOAST NOTIFICATION */}
-      {toast && (
-        <div style={{
-          position: 'fixed',
-          top: '100px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 9999,
-          background: toast.type === 'error' ? '#1a0a0a' : '#0a1a0a',
-          border: `1px solid ${toast.type === 'error' ? 'rgba(255,0,51,0.3)' : 'rgba(200,245,66,0.3)'}`,
-          borderRadius: '20px',
-          padding: '20px 50px 20px 28px',
-          maxWidth: '500px',
-          width: '90%',
-          boxShadow: toast.type === 'error' 
-            ? '0 20px 60px rgba(255,0,51,0.2), 0 0 40px rgba(255,0,51,0.1)' 
-            : '0 20px 60px rgba(200,245,66,0.15), 0 0 40px rgba(200,245,66,0.08)',
-          animation: 'toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '14px'
-        }}>
-          <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '12px',
-            background: toast.type === 'error' ? 'rgba(255,0,51,0.15)' : 'rgba(200,245,66,0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '18px',
-            flexShrink: 0
-          }}>
-            {toast.type === 'error' ? '⚠️' : '✅'}
-          </div>
-          <p style={{
-            color: 'white',
-            fontSize: '13px',
-            fontWeight: 600,
-            lineHeight: 1.5,
-            margin: 0
-          }}>{toast.message}</p>
-          <button 
-            onClick={() => setToast(null)}
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '14px',
-              background: 'rgba(255,255,255,0.08)',
-              border: 'none',
-              borderRadius: '8px',
-              color: 'rgba(255,255,255,0.4)',
-              cursor: 'pointer',
-              padding: '4px 8px',
-              fontSize: '14px',
-              fontWeight: 900,
-              lineHeight: 1
-            }}
-          >✕</button>
-        </div>
-      )}
-
-      <style>{`
-        @keyframes toastSlideIn {
-          from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-          to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
       `}</style>
     </div>

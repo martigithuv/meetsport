@@ -3,6 +3,7 @@ import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Users, Activity, BarChart3, Star, Ban, Trash2, Eye, EyeOff, Edit } from 'lucide-react';
 import Modal from '../components/ui/Modal';
+import { useToast } from '../context/ToastContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -31,6 +32,7 @@ ChartJS.register(
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('users');
   const [data, setData] = useState({ users: [], activities: [], stats: null });
   const [loading, setLoading] = useState(true);
@@ -77,7 +79,7 @@ const AdminDashboard = () => {
     try {
       await api.put(`/admin/users/block/${id}`);
       fetchData();
-    } catch (err) { alert('Error blocking user'); }
+    } catch (err) { showToast('Error blocking user', 'error'); }
   };
 
   const deleteUser = async (id) => {
@@ -85,14 +87,14 @@ const AdminDashboard = () => {
     try {
       await api.delete(`/admin/users/${id}`);
       fetchData();
-    } catch (err) { alert('Error deleting user'); }
+    } catch (err) { showToast('Error deleting user', 'error'); }
   };
 
   const toggleHide = async (id) => {
     try {
       await api.put(`/admin/activities/hide/${id}`);
       fetchData();
-    } catch (err) { alert('Error hiding activity'); }
+    } catch (err) { showToast('Error hiding activity', 'error'); }
   };
 
   const deleteActivity = async (id) => {
@@ -100,7 +102,7 @@ const AdminDashboard = () => {
     try {
       await api.delete(`/admin/activities/${id}`);
       fetchData();
-    } catch (err) { alert('Error al eliminar l\'activitat'); }
+    } catch (err) { showToast('Error al eliminar l\'activitat', 'error'); }
   };
 
   const handleEditClick = (activity) => {
@@ -122,11 +124,11 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       await api.put(`/admin/activities/${editActivityModal.activity._id}`, editActivityForm);
-      alert('Activitat actualitzada correctament');
+      showToast('Activitat actualitzada correctament');
       setEditActivityModal({ isOpen: false, activity: null });
       fetchData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Error al actualitzar l\'activitat');
+      showToast(err.response?.data?.message || 'Error al actualitzar l\'activitat', 'error');
     }
   };
 
@@ -137,11 +139,11 @@ const AdminDashboard = () => {
         points: deductForm.points,
         comment: deductForm.comment
       });
-      alert('Punts restats correctament');
+      showToast('Punts restats correctament');
       setDeductModal({ isOpen: false, user: null });
       fetchData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Error al restar punts');
+      showToast(err.response?.data?.message || 'Error al restar punts', 'error');
     }
   };
 

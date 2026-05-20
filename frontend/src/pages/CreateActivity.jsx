@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { Camera, X, Plus, Calendar, MapPin, Info } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 const CreateActivity = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -48,10 +50,10 @@ const CreateActivity = () => {
 
     try {
       await api.post('/activities', payload);
-      alert('Activitat creada correctament!');
+      showToast('Activitat creada correctament!');
       navigate('/explore');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error en crear l\'activitat');
+      showToast(err.response?.data?.message || 'Error en crear l\'activitat', 'error');
     } finally {
       setLoading(false);
     }

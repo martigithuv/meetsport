@@ -2,13 +2,15 @@ import React from 'react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { Check, X, Zap, Crown, Search, ShieldCheck, Heart, Paperclip, Eye } from 'lucide-react';
+import { useToast } from '../context/ToastContext';
 
 const Premium = () => {
   const { user } = useAuth();
+  const { showToast } = useToast();
 
   const handleActivatePremium = async () => {
     if (user.isPremium) {
-      alert('Ja disposes del pla Premium! Gaudeix dels teus avantatges.');
+      showToast('Ja disposes del pla Premium! Gaudeix dels teus avantatges.', 'info');
       return;
     }
 
@@ -17,11 +19,11 @@ const Premium = () => {
       if (response.data.url) {
         window.location.href = response.data.url;
       } else {
-        alert('Error al processar el pagament');
+        showToast('Error al processar el pagament', 'error');
       }
     } catch (err) {
       console.error(err);
-      alert('Hubo un error al procesar el pago');
+      showToast('Hubo un error al procesar el pago', 'error');
     }
   };
 
