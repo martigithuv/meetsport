@@ -4,7 +4,7 @@ import { Star, Users, Calendar, MapPin, ExternalLink } from 'lucide-react';
 const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorite }) => {
   const now = new Date();
   const actDate = new Date(activity.date);
-  const isFinished = actDate < now;
+  const isFinished = actDate < now || activity.status === 'FINALITZADA' || activity.status === 'COMPLETED' || activity.status === 'CANCELLED';
   
   // Logic for colored status dot
   const diffTime = actDate - now;

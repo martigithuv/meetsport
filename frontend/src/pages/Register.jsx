@@ -44,13 +44,13 @@ const Register = () => {
             <label className="label-small">Nom complet</label>
             <div className="input-with-icon">
               <User size={18} className="icon" />
-              <input 
-                type="text" 
-                className="input-dark" 
+              <input
+                type="text"
+                className="input-dark"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: Joan Martí" 
-                required 
+                placeholder="El teu nom"
+                required
               />
             </div>
           </div>
@@ -58,13 +58,13 @@ const Register = () => {
             <label className="label-small">Email</label>
             <div className="input-with-icon">
               <Mail size={18} className="icon" />
-              <input 
-                type="email" 
-                className="input-dark" 
+              <input
+                type="email"
+                className="input-dark"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Ex: joan@test.com" 
-                required 
+                placeholder="El teu email"
+                required
               />
             </div>
           </div>
@@ -72,13 +72,13 @@ const Register = () => {
             <label className="label-small">Contrasenya</label>
             <div className="input-with-icon">
               <Lock size={18} className="icon" />
-              <input 
-                type="password" 
-                className="input-dark" 
+              <input
+                type="password"
+                className="input-dark"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••" 
-                required 
+                placeholder="••••••••"
+                required
               />
             </div>
           </div>
