@@ -632,7 +632,7 @@ const Explore = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
                   {/* Date box */}
-                  <div className="flex items-center gap-3.5 p-3.5 bg-white/[0.02] rounded-2xl border border-white/5">
+                  <div className="flex items-center gap-5 p-4 bg-white/[0.02] rounded-2xl border border-white/5">
                     <div className="w-10 h-10 rounded-xl bg-lime/10 flex items-center justify-center text-lime shrink-0">
                       <Calendar size={20} />
                     </div>
@@ -645,7 +645,7 @@ const Explore = () => {
                   
                   {/* Location box */}
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-3.5 p-3.5 bg-white/[0.02] rounded-2xl border border-white/5">
+                    <div className="flex items-center gap-5 p-4 bg-white/[0.02] rounded-2xl border border-white/5">
                       <div className="w-10 h-10 rounded-xl bg-orange/10 flex items-center justify-center text-orange shrink-0">
                         <MapPin size={20} />
                       </div>
@@ -717,9 +717,9 @@ const Explore = () => {
                 </div>
 
                 {/* Enrollment button */}
-                <div className="shrink-0">
+                <div className="shrink-0 flex justify-center mt-2">
                   {selectedActivity.participants?.includes(user?._id) ? (
-                    <div className="w-full py-3 px-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
+                    <div className="w-[90%] py-4 px-6 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-lime/15 flex items-center justify-center text-lime shrink-0">
                           <ShieldCheck size={18} strokeWidth={2.5} />
@@ -737,7 +737,7 @@ const Explore = () => {
                     <button 
                       onClick={() => handleJoin(selectedActivity._id)}
                       disabled={selectedActivity.isFull}
-                      className={`w-full py-3.5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
+                      className={`w-[90%] py-[18px] rounded-2xl font-black text-sm uppercase tracking-[0.2em] shadow-lg transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${selectedActivity.isFull ? 'bg-white/5 text-muted3 cursor-not-allowed border border-white/5' : 'bg-lime text-dark hover:scale-[1.03] active:scale-97 shadow-lime/25 border-none'}`}
                     >
                       <Plus size={18} strokeWidth={3} />
                       FER INSCRIPCIÓ
