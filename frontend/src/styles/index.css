@@ -498,7 +498,8 @@ select {
   width: 90%;
   position: relative;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-  max-height: 90vh;
+  max-height: calc(100vh - 120px);
+  margin-top: 80px;
   overflow-y: auto;
 }
 
