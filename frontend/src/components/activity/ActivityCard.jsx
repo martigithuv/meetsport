@@ -32,17 +32,30 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
 
   return (
     <div 
-      className="activity-card-horizontal group relative" 
+      className="activity-card-horizontal group relative overflow-hidden" 
       onClick={() => onOpen(activity)}
     >
       {/* Left Accent Bar */}
       <div className={`w-1.5 h-full absolute left-0 top-0 z-10 transition-all duration-300 ${isFinished ? 'bg-red-500' : 'bg-lime group-hover:w-3'}`}></div>
       
-      {/* Absolute Top-Right Container for Status Dot + Star Icon (Very Top-Right of Card, Well inside Margins) */}
-      <div className="absolute top-6 right-6 flex items-center gap-3.5 z-20">
-        {/* The Status Dot - Visible for all users (Made larger as requested) */}
+      {/* Star Icon - Top Left - Visible for premium users only */}
+      {isPremium && (
+        <button 
+          className={`absolute top-3 left-5 z-20 p-2.5 rounded-xl transition-all duration-300 ${isFavorite ? 'bg-orange/25 text-orange shadow-lg shadow-orange/20' : 'bg-white/5 text-white/30 hover:bg-white/15'}`} 
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(activity._id);
+          }}
+          title={isFavorite ? "Treure de preferits" : "Afegir a preferits"}
+        >
+          <Star size={18} fill={isFavorite ? 'currentColor' : 'none'} strokeWidth={2.5} />
+        </button>
+      )}
+
+      {/* Status Dot - Top Right */}
+      <div className="absolute top-4 right-4 z-20">
         <div 
-          className="w-4.5 h-4.5 rounded-full border border-white/20 shadow-md shrink-0"
+          className="w-4.5 h-4.5 rounded-full border border-white/20 shadow-md"
           style={{ 
             backgroundColor: statusColor,
             boxShadow: `0 0 14px ${statusColor}cc`,
@@ -50,20 +63,6 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
           }}
           title={isFinished ? "Activitat finalitzada" : (diffDays <= 7 ? "Expira en menys de 7 dies" : "Expira en 7 dies o més")}
         ></div>
-
-        {/* Star Icon - Visible for premium users only */}
-        {isPremium && (
-          <button 
-            className={`p-2.5 rounded-xl transition-all duration-300 shrink-0 ${isFavorite ? 'bg-orange/25 text-orange shadow-lg shadow-orange/20' : 'bg-white/5 text-white/30 hover:bg-white/15'}`} 
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleFavorite(activity._id);
-            }}
-            title={isFavorite ? "Treure de preferits" : "Afegir a preferits"}
-          >
-            <Star size={18} fill={isFavorite ? 'currentColor' : 'none'} strokeWidth={2.5} />
-          </button>
-        )}
       </div>
 
       <div className="flex flex-col md:flex-row items-stretch h-full w-full">
