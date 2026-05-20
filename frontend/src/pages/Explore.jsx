@@ -259,12 +259,12 @@ const Explore = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-5 w-full justify-center max-w-4xl">
-          <div className="relative group flex-1">
-            <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-muted3 group-focus-within:text-lime transition-colors" size={24} />
+          <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl flex items-center gap-6 px-10 shadow-2xl focus-within:border-lime/40 focus-within:bg-white/[0.08] transition-all group cursor-text" onClick={(e) => e.currentTarget.querySelector('input')?.focus()}>
+            <Search className="text-muted3 group-focus-within:text-lime transition-colors shrink-0" size={26} />
             <input 
               type="text" 
               placeholder={searchMode === 'activities' ? "Cerca per títol o esport..." : "Cerca usuaris per nom o email..."} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-24 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
+              className="w-full bg-transparent border-none text-[17px] text-white outline-none placeholder:text-muted3/60 py-6"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
