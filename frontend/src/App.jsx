@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import { ConfirmProvider } from './context/ConfirmContext';
 import MainLayout from './components/layout/MainLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -31,6 +32,7 @@ const AdminRoute = ({ children }) => {
 function App() {
   return (
     <ToastProvider>
+    <ConfirmProvider>
     <AuthProvider>
       <Router>
         <MainLayout>
@@ -55,6 +57,7 @@ function App() {
         </MainLayout>
       </Router>
     </AuthProvider>
+    </ConfirmProvider>
     </ToastProvider>
   );
 }

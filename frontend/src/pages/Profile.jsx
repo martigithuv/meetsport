@@ -7,6 +7,7 @@ import {
   MapPin, Calendar, X, Check, Trash2
 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../context/ConfirmContext';
 
 /* ── Helpers ── */
 const UserChip = ({ u }) => (
@@ -37,6 +38,7 @@ const EmptyState = ({ icon, text }) => (
 const Profile = () => {
   const { user, logout, updateUser } = useAuth();
   const { showToast } = useToast();
+  const { confirm } = useConfirm();
 
   const [activeTab, setActiveTab]       = useState('dades');
   const [stats, setStats]               = useState(null);
@@ -157,7 +159,8 @@ const Profile = () => {
   };
 
   const handleFinalizeActivity = async (activityId) => {
-    if (!window.confirm('Segur que vols finalitzar aquesta activitat? Això tancarà les inscripcions i s\'obriran les valoracions dels participants.')) return;
+    const isConfirmed = await confirm('Segur que vols finalitzar aquesta activitat? Això tancarà les inscripcions i s\'obriran les valoracions dels participants.');
+    if (!isConfirmed) return;
     try {
       setTabLoading(true);
       await api.put(`/activities/${activityId}/finalize`);
@@ -306,7 +309,8 @@ const Profile = () => {
   };
 
   const handleCancelEnrollment = async (activityId) => {
-    if (!window.confirm('Segur que vols cancel·lar la teva inscripció a aquesta activitat?')) return;
+    const isConfirmed = await confirm('Segur que vols cancel·lar la teva inscripció a aquesta activitat?');
+    if (!isConfirmed) return;
     
     try {
       // Use both possible IDs if one fails, but backend should accept activityId

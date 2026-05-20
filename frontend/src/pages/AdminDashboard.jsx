@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { Users, Activity, BarChart3, Star, Ban, Trash2, Eye, EyeOff, Edit } from 'lucide-react';
 import Modal from '../components/ui/Modal';
 import { useToast } from '../context/ToastContext';
+import { useConfirm } from '../context/ConfirmContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,6 +34,7 @@ ChartJS.register(
 const AdminDashboard = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
+  const { confirm } = useConfirm();
   const [activeTab, setActiveTab] = useState('users');
   const [data, setData] = useState({ users: [], activities: [], stats: null });
   const [loading, setLoading] = useState(true);
@@ -83,7 +85,8 @@ const AdminDashboard = () => {
   };
 
   const deleteUser = async (id) => {
-    if (!confirm('Eliminar usuari per sempre?')) return;
+    const isConfirmed = await confirm('Eliminar usuari per sempre?');
+    if (!isConfirmed) return;
     try {
       await api.delete(`/admin/users/${id}`);
       fetchData();
@@ -98,7 +101,8 @@ const AdminDashboard = () => {
   };
 
   const deleteActivity = async (id) => {
-    if (!confirm('Eliminar activitat i totes les seves inscripcions per sempre?')) return;
+    const isConfirmed = await confirm('Eliminar activitat i totes les seves inscripcions per sempre?');
+    if (!isConfirmed) return;
     try {
       await api.delete(`/admin/activities/${id}`);
       fetchData();
