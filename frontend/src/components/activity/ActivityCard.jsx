@@ -10,11 +10,11 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
   const diffTime = actDate - now;
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  let statusColor = '#c8f542'; // Green (Lime)
+  let statusColor = '#FAFF00'; // Groc brillant (activa)
   if (isFinished) {
-    statusColor = '#ef4444'; // Red
+    statusColor = '#FF0033'; // Vermell fort (finalitzada)
   } else if (diffDays <= 7) {
-    statusColor = '#ff6b2b'; // Orange
+    statusColor = '#FF8C00'; // Taronja intens (expira aviat)
   }
 
   const handleOpenMaps = (e) => {
