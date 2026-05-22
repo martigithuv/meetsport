@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import io from 'socket.io-client';
 import {
   Camera, User, Activity, Star, Award, Trophy, Eye,
   Users as UsersIcon, LogOut, ShieldCheck,
@@ -54,6 +55,10 @@ const Profile = () => {
   const [followers, setFollowers]       = useState([]);
   const [profileViews, setProfileViews] = useState([]);
 
+  // Gamification States
+  const [allBadges, setAllBadges]       = useState([]);
+  const [userBadges, setUserBadges]     = useState([]);
+
   // Rating flow states
   const [ratingFlow, setRatingFlow] = useState({
     isOpen: false,
@@ -91,17 +96,57 @@ const Profile = () => {
       setLoading(true);
       try {
         await fetchStats();
-        const [actsRes, enrollRes] = await Promise.all([
+        const [actsRes, enrollRes, badgesRes, userBadgesRes] = await Promise.all([
           api.get('/activities/my'),
           api.get('/enrollments/my'),
+          api.get('/badges').catch(() => ({ data: [] })),
+          api.get(`/badges/user/${user?._id || user?.id}`).catch(() => ({ data: [] }))
         ]);
-        setActivities(actsRes.data);
-        setEnrollments(enrollRes.data);
+        setActivities(actsRes.data || []);
+        setEnrollments(enrollRes.data || []);
+        setAllBadges(badgesRes.data || []);
+        setUserBadges(userBadgesRes.data || []);
       } catch (err) { console.error("Error init profile:", err); }
       finally { setLoading(false); }
     };
     init();
-  }, [fetchStats]);
+  }, [fetchStats, user?._id, user?.id]);
+
+  // Real-time socket events for points and badges
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const socketUrl = import.meta.env.VITE_WS_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '/');
+    const socket = io(socketUrl);
+
+    socket.on('connect', () => {
+      socket.emit('join_user_room', user._id);
+    });
+
+    socket.on('points_updated', (data) => {
+      setStats(prev => prev ? { ...prev, total_points: data.total_points } : null);
+      updateUser({ total_points: data.total_points });
+      if (data.pointsAwarded > 0) {
+        showToast(`+${data.pointsAwarded} punts guanyats!`, 'success');
+      } else if (data.pointsAwarded < 0) {
+        showToast(`${data.pointsAwarded} punts restats!`, 'warning');
+      }
+    });
+
+    socket.on('badge_unlocked', async (data) => {
+      showToast(`🏆 INSÍGNIA DESBLOQUEJADA: "${data.badge.name}"!`, 'success');
+      try {
+        const userBadgesRes = await api.get(`/badges/user/${user._id}`);
+        setUserBadges(userBadgesRes.data || []);
+      } catch (err) {
+        console.error("Error refreshing badges:", err);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [user?._id, showToast, updateUser]);
 
   // Auto-trigger badge unlock notifications when conditions are met
   useEffect(() => {
@@ -440,101 +485,124 @@ const Profile = () => {
         <div id="profile-tabs-content" className="min-h-[500px] animate-fade-in-up">
           {/* ── Tab: Insígnies ── */}
           {activeTab === 'insignies' && (
-            <div className="bg-dark2 p-12 md:p-16 rounded-[40px] border border-white/5 shadow-2xl flex flex-col items-center justify-center min-h-[450px]">
+            <div className="bg-dark2 p-12 md:p-16 rounded-[40px] border border-white/5 shadow-2xl flex flex-col items-center min-h-[450px]">
               <div className="text-center mb-10">
                 <h2 className="font-display text-3xl font-black text-white tracking-tight mb-2">LES TEVES INSÍGNIES</h2>
-                <p className="text-muted3 text-sm font-medium opacity-60">Supera reptes per desbloquejar assoliments únics i destacar a la comunitat.</p>
+                <p className="text-muted3 text-sm font-medium opacity-60">Supera reptes per desbloquejar assoliments uniques i destacar a la comunitat.</p>
               </div>
 
-              <div className="flex flex-col md:flex-row items-stretch justify-center gap-10 w-full max-w-4xl">
-                {/* Badge 1: Medal */}
-                {(() => {
-                  const isUnlocked = activities.length >= 30;
-                  return (
-                    <div className="flex-1 bg-white/5 backdrop-blur-xl p-8 rounded-[36px] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col items-center justify-between text-center gap-6 relative overflow-hidden group">
-                      {isUnlocked && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange/5 to-transparent pointer-events-none"></div>
-                      )}
+              {allBadges.length === 0 ? (
+                <div className="text-center py-12 opacity-60">
+                  <span className="text-5xl block mb-4">🏆</span>
+                  <p className="text-muted3 text-base font-bold">No hi ha insignies definides al sistema encara.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+                  {allBadges.map((badge) => {
+                    const isUnlocked = userBadges.some(ub => ub._id === badge._id || ub.name === badge.name);
+                    
+                    // Color customization based on state and type
+                    let glowClass = 'bg-white/5 border border-white/10 text-white/20 grayscale opacity-40';
+                    let textClass = 'text-white/40';
+                    let neonGradient = '';
+                    let pulseColor = 'rgba(255, 255, 255, 0.1)';
+
+                    if (isUnlocked) {
+                      textClass = 'text-lime';
+                      glowClass = 'bg-lime/20 border-2 border-lime/40 text-lime shadow-[0_0_40px_rgba(200,245,66,0.4)] animate-[pulse_2s_infinite_ease-in-out] scale-105';
+                      neonGradient = 'absolute inset-0 bg-gradient-to-br from-lime/5 to-transparent pointer-events-none';
+                      pulseColor = 'rgba(200, 245, 66, 0.8)';
                       
-                      {/* Icon Container */}
-                      <div className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-700 ${
-                        isUnlocked 
-                          ? 'bg-orange/20 border-2 border-orange/40 text-orange shadow-[0_0_40px_rgba(255,107,43,0.4)] animate-[pulse_2s_infinite_ease-in-out] scale-105' 
-                          : 'bg-white/5 border border-white/10 text-white/20 grayscale opacity-40'
-                      }`}>
-                        <Award size={48} className={isUnlocked ? 'fill-orange/20 animate-[spin_20s_infinite_linear]' : ''} />
-                      </div>
+                      if (badge.type === 'POINTS') {
+                        glowClass = 'bg-yellow-500/20 border-2 border-yellow-500/40 text-yellow-500 shadow-[0_0_40px_rgba(234,179,8,0.4)] scale-105';
+                        textClass = 'text-yellow-500';
+                        neonGradient = 'absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent pointer-events-none';
+                        pulseColor = 'rgba(234, 179, 8, 0.8)';
+                      } else if (badge.type === 'ORGANIZER') {
+                        glowClass = 'bg-orange/20 border-2 border-orange/40 text-orange shadow-[0_0_40px_rgba(255,107,43,0.4)] scale-105';
+                        textClass = 'text-orange';
+                        neonGradient = 'absolute inset-0 bg-gradient-to-br from-orange/5 to-transparent pointer-events-none';
+                        pulseColor = 'rgba(255, 107, 43, 0.8)';
+                      } else if (badge.type === 'RELIABILITY') {
+                        glowClass = 'bg-cyan-500/20 border-2 border-cyan-500/40 text-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.4)] scale-105';
+                        textClass = 'text-cyan-500';
+                        neonGradient = 'absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none';
+                        pulseColor = 'rgba(6, 182, 212, 0.8)';
+                      } else if (badge.type === 'ACTIVITIES') {
+                        glowClass = 'bg-pink-500/20 border-2 border-pink-500/40 text-pink-500 shadow-[0_0_40px_rgba(236,72,153,0.4)] scale-105';
+                        textClass = 'text-pink-500';
+                        neonGradient = 'absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent pointer-events-none';
+                        pulseColor = 'rgba(236, 72, 153, 0.8)';
+                      }
+                    }
 
-                      {/* Text details */}
-                      <div className="space-y-3">
-                        <h3 className={`font-black text-xl tracking-tight transition-colors duration-300 ${isUnlocked ? 'text-orange' : 'text-white/40'}`}>
-                          🏅 MEDALLA D'ORGANITZADOR
-                        </h3>
-                        <p className="text-sm text-muted3 leading-relaxed px-2">
-                          {isUnlocked 
-                            ? 'Ja has publicat 30 activitats.' 
-                            : 'Desbloquejaràs aquesta medalla quan aconsegueixis publicar 30 activitats.'}
-                        </p>
-                      </div>
+                    // Progress indicators
+                    let progressPercent = 0;
+                    let progressLabel = '';
+                    if (badge.name === 'Primera Actividad') {
+                      const totalActs = activities.length + enrollments.length;
+                      progressPercent = Math.min((totalActs / 1) * 100, 100);
+                      progressLabel = `${totalActs} / 1 ACT`;
+                    } else if (badge.name === 'Organizador Activo') {
+                      progressPercent = Math.min((activities.length / 5) * 100, 100);
+                      progressLabel = `${activities.length} / 5 ACTS CREADES`;
+                    } else if (badge.name === '1000 Puntos') {
+                      progressPercent = Math.min(((stats?.total_points || 0) / 1000) * 100, 100);
+                      progressLabel = `${stats?.total_points || 0} / 1000 Pts`;
+                    } else if (badge.name === '5000 Puntos') {
+                      progressPercent = Math.min(((stats?.total_points || 0) / 5000) * 100, 100);
+                      progressLabel = `${stats?.total_points || 0} / 5000 Pts`;
+                    } else if (badge.name === 'Usuario Fiable') {
+                      progressPercent = ratings.length >= 5 ? 100 : Math.min((ratings.length / 5) * 100, 100);
+                      progressLabel = `${ratings.length} / 5 VALORACIONS`;
+                    }
 
-                      {/* Progress Bar / Indicator */}
-                      <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/5 mt-2">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-1000 ${isUnlocked ? 'bg-orange shadow-[0_0_10px_rgba(255,107,43,0.8)]' : 'bg-white/20'}`}
-                          style={{ width: `${Math.min((activities.length / 30) * 100, 100)}%` }}
-                        ></div>
-                      </div>
-                      <div className="text-[10px] font-black text-muted3/60 tracking-widest uppercase">
-                        PROGRÉS: {activities.length} / 30 ACTIVITATS
-                      </div>
-                    </div>
-                  );
-                })()}
+                    return (
+                      <div key={badge._id} className="bg-white/5 backdrop-blur-xl p-8 rounded-[36px] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col items-center justify-between text-center gap-6 relative overflow-hidden group">
+                        {neonGradient && <div className={neonGradient}></div>}
+                        
+                        {/* Icon Container */}
+                        <div className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-700 ${glowClass}`}>
+                          <span className="text-4xl">{badge.icon || '🏆'}</span>
+                        </div>
 
-                {/* Badge 2: Star */}
-                {(() => {
-                  const isUnlocked = (stats?.total_points || 0) >= 8000;
-                  return (
-                    <div className="flex-1 bg-white/5 backdrop-blur-xl p-8 rounded-[36px] border border-white/5 hover:border-white/10 transition-all duration-500 flex flex-col items-center justify-between text-center gap-6 relative overflow-hidden group">
-                      {isUnlocked && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-lime/5 to-transparent pointer-events-none"></div>
-                      )}
-                      
-                      {/* Icon Container */}
-                      <div className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-700 ${
-                        isUnlocked 
-                          ? 'bg-lime/20 border-2 border-lime/40 text-lime shadow-[0_0_40px_rgba(200,245,66,0.4)] animate-[pulse_2s_infinite_ease-in-out] scale-105' 
-                          : 'bg-white/5 border border-white/10 text-white/20 grayscale opacity-40'
-                      }`}>
-                        <Star size={48} className={isUnlocked ? 'fill-lime/20 animate-[pulse_3s_infinite_ease-in-out]' : ''} />
-                      </div>
+                        {/* Text details */}
+                        <div className="space-y-3">
+                          <h3 className={`font-black text-xl tracking-tight transition-colors duration-300 ${textClass}`}>
+                            {badge.name.toUpperCase()}
+                          </h3>
+                          <p className="text-sm text-muted3 leading-relaxed px-2">
+                            {badge.description}
+                          </p>
+                          <div className="text-[10px] font-bold text-muted3/60 tracking-wider">
+                            Requisit: {badge.requirement}
+                          </div>
+                        </div>
 
-                      {/* Text details */}
-                      <div className="space-y-3">
-                        <h3 className={`font-black text-xl tracking-tight transition-colors duration-300 ${isUnlocked ? 'text-lime' : 'text-white/40'}`}>
-                          ⭐ ESTRELLA DE PUNTS
-                        </h3>
-                        <p className="text-sm text-muted3 leading-relaxed px-2">
-                          {isUnlocked 
-                            ? 'Ja has arribat als 8000 punts.' 
-                            : 'Aconseguiràs l\'estrella quan aconsegueixis els 8000 punts.'}
-                        </p>
+                        {/* Progress Bar / Indicator */}
+                        {progressLabel && (
+                          <div className="w-full mt-2">
+                            <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden border border-white/5">
+                              <div 
+                                className="h-full rounded-full transition-all duration-1000"
+                                style={{ 
+                                  width: `${progressPercent}%`, 
+                                  backgroundColor: isUnlocked ? undefined : 'rgba(255,255,255,0.2)',
+                                  boxShadow: isUnlocked ? `0 0 10px ${pulseColor}` : 'none',
+                                  background: isUnlocked ? (badge.type === 'POINTS' ? '#eab308' : badge.type === 'ORGANIZER' ? '#ff6b2b' : badge.type === 'RELIABILITY' ? '#06b6d4' : '#c8f542') : 'rgba(255,255,255,0.2)'
+                                }}
+                              ></div>
+                            </div>
+                            <div className="text-[9px] font-black text-muted3/50 tracking-widest uppercase mt-2">
+                              PROGRÉS: {progressLabel}
+                            </div>
+                          </div>
+                        )}
                       </div>
-
-                      {/* Progress Bar / Indicator */}
-                      <div className="w-full bg-white/5 rounded-full h-2.5 overflow-hidden border border-white/5 mt-2">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-1000 ${isUnlocked ? 'bg-lime shadow-[0_0_10px_rgba(200,245,66,0.8)]' : 'bg-white/20'}`}
-                          style={{ width: `${Math.min(((stats?.total_points || 0) / 8000) * 100, 100)}%` }}
-                        ></div>
-                      </div>
-                      <div className="text-[10px] font-black text-muted3/60 tracking-widest uppercase">
-                        PROGRÉS: {stats?.total_points || 0} / 8000 PUNTS
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 

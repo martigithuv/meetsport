@@ -99,56 +99,61 @@ exports.awardBadge = async (req, res) => {
   }
 };
 
+const initializeBadgesLogic = async () => {
+  const defaultBadges = [
+    {
+      name: 'Primera Actividad',
+      description: 'Completaste tu primera actividad',
+      icon: '🎯',
+      requirement: 'Participar en 1 actividad',
+      type: 'ACTIVITIES'
+    },
+    {
+      name: '1000 Puntos',
+      description: 'Alcanzaste 1000 puntos',
+      icon: '⭐',
+      requirement: 'Acumular 1000 puntos',
+      type: 'POINTS'
+    },
+    {
+      name: '5000 Puntos',
+      description: 'Alcanzaste 5000 puntos',
+      icon: '💎',
+      requirement: 'Acumular 5000 puntos',
+      type: 'POINTS'
+    },
+    {
+      name: 'Usuario Fiable',
+      description: 'Tienes una calificación promedio de 4.5+ estrellas',
+      icon: '✅',
+      requirement: 'Promedio de rating >= 4.5 estrellas',
+      type: 'RELIABILITY'
+    },
+    {
+      name: 'Organizador Activo',
+      description: 'Organizaste 5 actividades',
+      icon: '🏆',
+      requirement: 'Crear 5 actividades',
+      type: 'ORGANIZER'
+    }
+  ];
+
+  for (const badgeData of defaultBadges) {
+    const exists = await Badge.findOne({ name: badgeData.name });
+    if (!exists) {
+      await Badge.create(badgeData);
+    }
+  }
+};
+
+exports.initializeBadgesLogic = initializeBadgesLogic;
+
 // @desc    Inicializar medallas por defecto (llamar una sola vez)
 // @route   POST /api/badges/init
 // @access  Private/Admin
 exports.initializeBadges = async (req, res) => {
   try {
-    const defaultBadges = [
-      {
-        name: 'Primera Actividad',
-        description: 'Completaste tu primera actividad',
-        icon: '🎯',
-        requirement: 'Participar en 1 actividad',
-        type: 'ACTIVITIES'
-      },
-      {
-        name: '1000 Puntos',
-        description: 'Alcanzaste 1000 puntos',
-        icon: '⭐',
-        requirement: 'Acumular 1000 puntos',
-        type: 'POINTS'
-      },
-      {
-        name: '5000 Puntos',
-        description: 'Alcanzaste 5000 puntos',
-        icon: '💎',
-        requirement: 'Acumular 5000 puntos',
-        type: 'POINTS'
-      },
-      {
-        name: 'Usuario Fiable',
-        description: 'Tienes una calificación promedio de 4.5+ estrellas',
-        icon: '✅',
-        requirement: 'Promedio de rating >= 4.5 estrellas',
-        type: 'RELIABILITY'
-      },
-      {
-        name: 'Organizador Activo',
-        description: 'Organizaste 5 actividades',
-        icon: '🏆',
-        requirement: 'Crear 5 actividades',
-        type: 'ORGANIZER'
-      }
-    ];
-
-    for (const badgeData of defaultBadges) {
-      const exists = await Badge.findOne({ name: badgeData.name });
-      if (!exists) {
-        await Badge.create(badgeData);
-      }
-    }
-
+    await initializeBadgesLogic();
     res.json({ message: 'Medallas inicializadas correctamente' });
   } catch (error) {
     res.status(400).json({ message: 'Error inicializando medallas', error: error.message });

@@ -82,8 +82,15 @@ const Register = () => {
               />
             </div>
           </div>
-          <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
-            {isSubmitting ? 'Creant compte...' : 'Crear compte'}
+          <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                Creant compte...
+              </>
+            ) : (
+              'Crear compte'
+            )}
           </button>
         </form>
 

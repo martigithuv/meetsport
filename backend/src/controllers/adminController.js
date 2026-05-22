@@ -219,6 +219,11 @@ exports.deductPoints = async (req, res) => {
         content: message.content,
         time: message.createdAt
       });
+      
+      io.to(userId).emit('points_updated', {
+        total_points: user.total_points,
+        pointsAwarded: -parseInt(points)
+      });
     }
 
     res.json({ success: true, message: 'Punts restats i missatge enviat correctament', newPoints: user.total_points });

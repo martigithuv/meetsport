@@ -93,6 +93,15 @@ exports.joinActivity = async (req, res) => {
 
     await activity.save();
 
+    // Ejecutar verificación de insignias
+    try {
+      const { checkAndAwardBadges } = require('./ratingController');
+      const io = req.app.get('io');
+      await checkAndAwardBadges(req.user._id, io);
+    } catch (badgeErr) {
+      console.error('Error al verificar insignias tras apuntarse a actividad:', badgeErr);
+    }
+
     const updatedActivity = await Activity.findById(activity._id).populate('creator', 'name profileDetails');
     const activityObj = updatedActivity.toObject();
     const participantsCount = activityObj.participants?.length || 0;
@@ -141,6 +150,15 @@ exports.createActivity = async (req, res) => {
 
     const { sendActivityCreationEmail } = require('../services/email');
     await sendActivityCreationEmail(req.user.email, req.user.name, title);
+
+    // Ejecutar verificación de insignias
+    try {
+      const { checkAndAwardBadges } = require('./ratingController');
+      const io = req.app.get('io');
+      await checkAndAwardBadges(req.user._id, io);
+    } catch (badgeErr) {
+      console.error('Error al verificar insignias tras crear actividad:', badgeErr);
+    }
 
     res.status(201).json(activity);
   } catch (error) {

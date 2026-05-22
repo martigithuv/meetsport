@@ -4,6 +4,12 @@ let transporter;
 
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS && process.env.EMAIL_USER !== '' && !process.env.EMAIL_USER.includes('PON_AQUI')) {
   transporter = nodemailer.createTransport({
+    pool: true, // Reutilitza connexions SMTP per a millor rendiment
+    maxConnections: 3,
+    maxMessages: 100,
+    connectionTimeout: 2000, // 2 segons màxim per establir la connexió TCP
+    greetingTimeout: 2000,   // 2 segons màxim per rebre el greeting SMTP
+    socketTimeout: 3000,     // 3 segons màxim d'inactivitat del socket
     host: process.env.EMAIL_HOST || 'smtp.gmail.com',
     port: 465, // PUERTO SSL SEGURO
     secure: true, // TRUE para puerto 465

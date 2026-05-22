@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { sendWelcomeEmail } = require('../services/email');
 
 // Generar Token JWT
@@ -34,8 +35,12 @@ exports.registerUser = async (req, res) => {
     });
 
     if (user) {
-      // Enviar email de bienvenida (sin esperar para no bloquear la respuesta)
-      sendWelcomeEmail(user.email, user.name);
+      // Enviar email de bienvenida de forma totalmente asíncrona en segundo plano para no demorar la respuesta
+      setImmediate(() => {
+        sendWelcomeEmail(user.email, user.name).catch(err => {
+          console.error('Error enviando email de bienvenida:', err);
+        });
+      });
 
       res.status(201).json({
         _id: user._id,
@@ -63,25 +68,31 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email })
+      .select('name email password isPremium profileDetails favorites isBlocked')
+      .lean();
 
-    if (user && (await user.matchPassword(password))) {
+    if (user) {
       if (user.isBlocked) {
         return res.status(403).json({ message: 'El teu compte ha estat bloquejat per un administrador' });
       }
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isPremium: user.isPremium,
-        avatar: user.profileDetails?.avatar,
-        bio: user.profileDetails?.bio,
-        favorites: user.favorites || [],
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401).json({ message: 'Email o contraseña inválidos' });
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        return res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          isPremium: user.isPremium,
+          avatar: user.profileDetails?.avatar,
+          bio: user.profileDetails?.bio,
+          favorites: user.favorites || [],
+          token: generateToken(user._id),
+        });
+      }
     }
+
+    res.status(401).json({ message: 'Email o contraseña inválidos' });
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }

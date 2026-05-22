@@ -80,8 +80,18 @@ exports.createRating = async (req, res) => {
       { new: true }
     );
 
-    // Verificar y otorgar medallas automáticas
-    await checkAndAwardBadges(recipientId);
+    // Obtener la instancia de socket.io de la app
+    const io = req.app.get('io');
+    if (io) {
+      // Emitir la actualización de puntos en tiempo real
+      io.to(recipientId).emit('points_updated', {
+        total_points: recipient.total_points,
+        pointsAwarded: points
+      });
+    }
+
+    // Verificar y otorgar medallas automáticas con sockets en tiempo real
+    await checkAndAwardBadges(recipientId, io);
 
     res.status(201).json({
       message: 'Valoración registrada',
@@ -132,11 +142,46 @@ exports.getActivityRatings = async (req, res) => {
 };
 
 // Función auxiliar para verificar y otorgar medallas
-async function checkAndAwardBadges(userId) {
+async function checkAndAwardBadges(userId, io = null) {
   try {
     const user = await User.findById(userId);
+    if (!user) return;
 
-    // Verificar medalla de 1000 puntos
+    const emitBadge = (badge) => {
+      if (io) {
+        io.to(userId).emit('badge_unlocked', { badge });
+      }
+    };
+
+    // 1. Verificar medalla de "Primera Actividad" (Crear o participar en al menos 1 actividad)
+    const joinedCount = await Activity.countDocuments({ participants: userId });
+    const createdCount = await Activity.countDocuments({ creator: userId });
+    if (joinedCount + createdCount >= 1) {
+      const badge = await Badge.findOne({ name: 'Primera Actividad' });
+      if (badge) {
+        const existingUserBadge = await UserBadge.findOne({ user: userId, badge: badge._id });
+        if (!existingUserBadge) {
+          const userBadge = await UserBadge.create({ user: userId, badge: badge._id });
+          await User.findByIdAndUpdate(userId, { $push: { badges: userBadge._id } });
+          emitBadge(badge);
+        }
+      }
+    }
+
+    // 2. Verificar medalla de "Organizador Activo" (Organizar al menos 5 actividades)
+    if (createdCount >= 5) {
+      const badge = await Badge.findOne({ name: 'Organizador Activo' });
+      if (badge) {
+        const existingUserBadge = await UserBadge.findOne({ user: userId, badge: badge._id });
+        if (!existingUserBadge) {
+          const userBadge = await UserBadge.create({ user: userId, badge: badge._id });
+          await User.findByIdAndUpdate(userId, { $push: { badges: userBadge._id } });
+          emitBadge(badge);
+        }
+      }
+    }
+
+    // 3. Verificar medalla de 1000 puntos
     if (user.total_points >= 1000) {
       const badge = await Badge.findOne({ name: '1000 Puntos' });
       if (badge) {
@@ -144,11 +189,12 @@ async function checkAndAwardBadges(userId) {
         if (!existingUserBadge) {
           const userBadge = await UserBadge.create({ user: userId, badge: badge._id });
           await User.findByIdAndUpdate(userId, { $push: { badges: userBadge._id } });
+          emitBadge(badge);
         }
       }
     }
 
-    // Verificar medalla de 5000 puntos
+    // 4. Verificar medalla de 5000 puntos
     if (user.total_points >= 5000) {
       const badge = await Badge.findOne({ name: '5000 Puntos' });
       if (badge) {
@@ -156,11 +202,12 @@ async function checkAndAwardBadges(userId) {
         if (!existingUserBadge) {
           const userBadge = await UserBadge.create({ user: userId, badge: badge._id });
           await User.findByIdAndUpdate(userId, { $push: { badges: userBadge._id } });
+          emitBadge(badge);
         }
       }
     }
 
-    // Verificar medalla "Usuario fiable" (promedio >= 4.5 estrellas)
+    // 5. Verificar medalla "Usuario fiable" (promedio >= 4.5 estrellas)
     const ratings = await Rating.find({ recipient: userId });
     if (ratings.length >= 5) {
       const avgRating = ratings.reduce((sum, r) => sum + r.ratingValue, 0) / ratings.length;
@@ -171,6 +218,7 @@ async function checkAndAwardBadges(userId) {
           if (!existingUserBadge) {
             const userBadge = await UserBadge.create({ user: userId, badge: badge._id });
             await User.findByIdAndUpdate(userId, { $push: { badges: userBadge._id } });
+            emitBadge(badge);
           }
         }
       }

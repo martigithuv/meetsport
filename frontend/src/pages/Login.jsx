@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Admin state
   const [showAdminLogin, setShowAdminLogin] = useState(false);
@@ -18,22 +19,28 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     try {
       await login(email, password);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Error al iniciar sessió');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleAdminSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     try {
       await loginAdmin(adminPassword);
       navigate('/admin');
     } catch (err) {
       setError(err.message || 'Contrasenya d\'administrador incorrecta');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,7 +67,7 @@ const Login = () => {
                   className="input-dark" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Ex: joan@test.com" 
+                  placeholder="El teu nom." 
                   required 
                 />
               </div>
@@ -75,7 +82,16 @@ const Login = () => {
                   required 
                 />
               </div>
-              <button type="submit" className="btn-primary w-full">Inicia sessió</button>
+              <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    Iniciant sessió...
+                  </>
+                ) : (
+                  'Inicia sessió'
+                )}
+              </button>
             </form>
 
             <div className="text-center mt-6">
@@ -107,7 +123,16 @@ const Login = () => {
                   autoFocus
                 />
               </div>
-              <button type="submit" className="btn-primary w-full bg-orange text-white hover:bg-orange/80 shadow-orange/20">Accedir al panell d'Admin</button>
+              <button type="submit" className="btn-primary w-full bg-orange text-white hover:bg-orange/80 shadow-orange/20 flex items-center justify-center gap-2" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                    Accedint al panell...
+                  </>
+                ) : (
+                  'Accedir al panell d\'Admin'
+                )}
+              </button>
             </form>
             
             <div className="text-center mt-6">

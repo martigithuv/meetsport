@@ -108,6 +108,19 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`Servidor corriendo en modo ${process.env.NODE_ENV || 'development'} en puerto ${PORT}`);
+  
+  // Auto-inicializar insignias por defecto al arrancar
+  try {
+    const Badge = require('./models/Badge');
+    const badgeCount = await Badge.countDocuments();
+    if (badgeCount === 0) {
+      const { initializeBadgesLogic } = require('./controllers/badgeController');
+      await initializeBadgesLogic();
+      console.log('Insignias por defecto inicializadas automáticamente.');
+    }
+  } catch (error) {
+    console.error('Error auto-inicializando insignias:', error.message);
+  }
 });
