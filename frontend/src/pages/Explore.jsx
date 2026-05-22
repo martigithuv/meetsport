@@ -589,9 +589,9 @@ const Explore = () => {
       </div>
 
       {/* REFINED PREMIUM MODAL */}
-      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="1050px">
-        {selectedActivity && (
-          <div className="activity-modal-premium-final p-0 overflow-hidden font-display bg-[#0c0c10] rounded-[32px] border border-white/10 shadow-2xl relative">
+      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="1150px">
+          {selectedActivity && (
+            <div className="activity-modal-premium-final p-0 overflow-visible font-display bg-[#0c0c10] rounded-[32px] border border-white/10 shadow-2xl relative">
             
             {/* Header */}
             <div className="relative h-[130px] flex items-end p-6 md:px-8 overflow-hidden">

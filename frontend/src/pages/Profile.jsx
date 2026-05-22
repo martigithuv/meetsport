@@ -417,17 +417,29 @@ const Profile = () => {
         <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-lime/10 rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-4" style={{ marginTop: '-120px' }}>
+      <div className="container relative z-10 mx-auto px-4" style={{ marginTop: '-40px' }}>
         {/* Header Section */}
         <div className="flex flex-col md:flex-row items-center md:items-end gap-10 mb-12">
           {/* Avatar with Ring */}
-          <div className="relative group">
+          <div className="flex flex-col items-center relative group">
+          <div className={`w-40 h-40 rounded-[48px] overflow-hidden border-4 ${user.isPremium ? 'border-orange shadow-[0_0_30px_rgba(255,107,43,0.3)]' : 'border-lime shadow-[0_0_30px_rgba(200,245,66,0.2)]'} bg-dark2 transition-transform duration-500 group-hover:scale-105`}
+            >
+                {stats?.profileDetails?.avatar
+                  ? <img src={stats.profileDetails.avatar} className="w-full h-full object-cover" alt="Profile" />
+                  : <div className="flex items-center justify-center h-full text-6xl">🧑‍🦱</div>}
+            </div>
+          <label className="flex flex-col items-center mt-4 cursor-pointer text-white">
+            <Camera size={28} className="mb-2" />
+            <span className="text-[10px] font-bold tracking-widest">CANVIAR FOTO</span>
+            <input type="file" hidden accept="image/*" onChange={handleAvatarChange} />
+          </label>
+        </div>
             <div className={`w-40 h-40 rounded-[48px] overflow-hidden border-4 ${user.isPremium ? 'border-orange shadow-[0_0_30px_rgba(255,107,43,0.3)]' : 'border-lime shadow-[0_0_30px_rgba(200,245,66,0.2)]'} bg-dark2 transition-transform duration-500 group-hover:scale-105`}>
               {stats?.profileDetails?.avatar
                 ? <img src={stats.profileDetails.avatar} className="w-full h-full object-cover" alt="Profile" />
                 : <div className="flex items-center justify-center h-full text-6xl">🧑‍🦱</div>}
             </div>
-            <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer rounded-[40px] text-white backdrop-blur-sm">
+            <label className="flex flex-col items-center mt-2 cursor-pointer text-white">
               <Camera size={28} className="mb-2" />
               <span className="text-[10px] font-bold tracking-widest">CANVIAR FOTO</span>
               <input type="file" hidden accept="image/*" onChange={handleAvatarChange} />
