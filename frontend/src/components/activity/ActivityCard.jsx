@@ -146,7 +146,7 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
         .activity-card-horizontal {
           position: relative;
           background: #111116;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(200, 245, 66, 0.18);
           border-radius: 32px;
           cursor: pointer;
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -158,8 +158,8 @@ const ActivityCard = ({ activity, onOpen, isPremium, isFavorite, onToggleFavorit
 
         .activity-card-horizontal:hover {
           transform: translateY(-8px) scale(1.01);
-          border-color: rgba(200, 245, 66, 0.3);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(200, 245, 66, 0.04);
+          border-color: rgba(200, 245, 66, 0.45);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(200, 245, 66, 0.06);
         }
       `}</style>
     </div>

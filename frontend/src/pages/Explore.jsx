@@ -264,7 +264,8 @@ const Explore = () => {
             <input 
               type="text" 
               placeholder={searchMode === 'activities' ? "Cerca per títol o esport..." : "Cerca usuaris per nom o email..."} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pl-24 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
+              style={{ paddingLeft: '76px' }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
