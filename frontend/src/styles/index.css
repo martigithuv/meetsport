@@ -1467,6 +1467,21 @@ select.input-dark option {
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
 }
 
+.chatContainer {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: calc(100vh - 130px);
+  background: var(--color-dark2);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+  max-width: 1700px;
+  margin: 0 auto;
+  z-index: 10;
+}
+
 .text-gradient {
   background: linear-gradient(135deg, #fff 0%, var(--color-lime) 100%);
   -webkit-background-clip: text;

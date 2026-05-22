@@ -52,7 +52,7 @@ const Header = () => {
         <div className="nav-auth">
           {user ? (
             <>
-              <Link to="/profile" className="profile-link">
+              <Link to="/profile" className={`profile-link ${user.isPremium ? 'premium' : 'regular'}`}>
                 <div className={`profile-icon ${user.isPremium ? 'premium' : 'regular'}`}>
                   {user.isPremium ? (
                     <Crown size={20} color="white" />
@@ -60,6 +60,7 @@ const Header = () => {
                     <User size={20} color="#c8f542" />
                   )}
                 </div>
+                <span className="profile-text">El meu perfil</span>
                 {user.isPremium && <div className="pro-tag">PRO</div>}
               </Link>
               <button onClick={handleLogout} className="btn-logout">
@@ -176,16 +177,51 @@ const Header = () => {
 
         .profile-link {
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 6px 16px 6px 6px;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .profile-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .profile-link.premium {
+            background: linear-gradient(135deg, rgba(255, 107, 43, 0.15), rgba(255, 142, 83, 0.1));
+            border-color: rgba(255, 107, 43, 0.3);
+        }
+
+        .profile-link.premium:hover {
+            background: linear-gradient(135deg, rgba(255, 107, 43, 0.25), rgba(255, 142, 83, 0.15));
+            border-color: rgba(255, 107, 43, 0.4);
+        }
+
+        .profile-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--color-light);
+            white-space: nowrap;
+        }
+
+        .profile-link.premium .profile-text {
+            color: #FF8E53;
         }
 
         .profile-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .profile-icon.premium {
