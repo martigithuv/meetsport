@@ -500,7 +500,7 @@ select {
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   max-height: calc(100vh - 170px);
   margin-top: 140px;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .close-modal {
