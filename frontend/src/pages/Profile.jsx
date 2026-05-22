@@ -434,17 +434,6 @@ const Profile = () => {
             <input type="file" hidden accept="image/*" onChange={handleAvatarChange} />
           </label>
         </div>
-            <div className={`w-40 h-40 rounded-[48px] overflow-hidden border-4 ${user.isPremium ? 'border-orange shadow-[0_0_30px_rgba(255,107,43,0.3)]' : 'border-lime shadow-[0_0_30px_rgba(200,245,66,0.2)]'} bg-dark2 transition-transform duration-500 group-hover:scale-105`}>
-              {stats?.profileDetails?.avatar
-                ? <img src={stats.profileDetails.avatar} className="w-full h-full object-cover" alt="Profile" />
-                : <div className="flex items-center justify-center h-full text-6xl">🧑‍🦱</div>}
-            </div>
-            <label className="flex flex-col items-center mt-2 cursor-pointer text-white">
-              <Camera size={28} className="mb-2" />
-              <span className="text-[10px] font-bold tracking-widest">CANVIAR FOTO</span>
-              <input type="file" hidden accept="image/*" onChange={handleAvatarChange} />
-            </label>
-          </div>
 
           {/* Identity & Stats */}
           <div className="flex-1 text-center md:text-left">

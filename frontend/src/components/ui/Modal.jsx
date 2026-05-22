@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
-
-import { useEffect } from 'react';
 
 const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
   // Lock background scrolling when modal is open
@@ -24,23 +22,6 @@ const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
         className="modal-content animate-pop-in"
         onClick={(e) => e.stopPropagation()}
         style={{ maxWidth, maxHeight: '85vh', overflow: 'hidden' }}
-      >
-        <button className="close-modal" onClick={onClose} aria-label="Tancar">
-          <X size={20} />
-        </button>
-        {children}
-      </div>
-    </div>
-  );
-};
-  if (!isOpen) return null;
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal-content animate-pop-in"
-        onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth }}
       >
         <button className="close-modal" onClick={onClose} aria-label="Tancar">
           <X size={20} />
