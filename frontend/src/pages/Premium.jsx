@@ -28,19 +28,18 @@ const Premium = () => {
   };
 
   return (
-    <div className="premium-page py-20 flex flex-col items-center justify-center min-h-[calc(100vh-140px)] animate-fade-in overflow-x-hidden">
+    <div className="premium-page py-10 md:py-20 flex flex-col items-center justify-center min-h-[calc(100vh-140px)] animate-fade-in overflow-x-hidden">
       <header className="text-center mb-16 px-4">
         <h1 className="font-display text-5xl md:text-7xl mb-6 tracking-tight">Plans <span className="text-lime">Premium</span></h1>
         <p className="text-muted3 text-xl opacity-80 max-w-2xl mx-auto">Desbloqueja tot el potencial de MeetSport i porta la teva experiència esportiva al següent nivell.</p>
       </header>
 
-      <div className="w-full max-w-[1400px] px-6 md:px-12">
-        <div className="flex flex-row justify-center gap-8 lg:gap-16 items-stretch">
+      <div className="w-full max-w-[1400px] px-4 md:px-12">
+        <div className="premium-plans-grid">
           
           {/* Free Plan */}
           <div 
-            className="flex flex-col p-10 lg:p-16 bg-dark2 border border-white/5 shadow-2xl relative transition-all hover:border-white/10 group flex-1 w-full"
-            style={{ borderRadius: '40px', minWidth: '520px', maxWidth: '600px' }}
+            className="flex flex-col p-8 lg:p-16 bg-dark2 border border-white/5 shadow-2xl relative transition-all hover:border-white/10 group premium-plan-card"
           >
             <div>
               <div className="mb-10 lg:mb-12">
@@ -69,8 +68,7 @@ const Premium = () => {
 
           {/* Premium Plan */}
           <div 
-            className="flex flex-col p-10 lg:p-16 bg-dark2 border border-lime/30 relative overflow-hidden shadow-[0_0_120px_rgba(200,245,66,0.15)] transition-all hover:scale-[1.02] hover:border-lime/60 group flex-1 w-full"
-            style={{ borderRadius: '40px', minWidth: '520px', maxWidth: '600px' }}
+            className="flex flex-col p-8 lg:p-16 bg-dark2 border border-lime/30 relative overflow-hidden shadow-[0_0_120px_rgba(200,245,66,0.15)] transition-all hover:scale-[1.02] hover:border-lime/60 group premium-plan-card"
           >
             <div className="absolute top-0 right-0 bg-lime text-dark text-xs lg:text-sm font-black px-8 py-4 uppercase tracking-[0.2em] shadow-2xl z-10" style={{ borderBottomLeftRadius: '30px' }}>
               Recomanat

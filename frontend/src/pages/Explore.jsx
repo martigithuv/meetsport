@@ -278,34 +278,12 @@ const Explore = () => {
         </div>
       </header>
 
-      {/* Main Layout Container (Locked side-by-side sidebar and grid) */}
-      <div 
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '16px',
-          alignItems: 'flex-start',
-          width: '100%',
-          marginTop: '20px'
-        }}
-      >
+      {/* Main Layout Container */}
+      <div className="explore-main-layout">
         
         {/* Left Sidebar for Premium Users (Sleek, Taller & Narrower) */}
         {user?.isPremium && searchMode === 'activities' && (
-          <aside 
-            style={{
-              width: '340px',
-              flexShrink: 0,
-              backgroundColor: '#15161a',
-              padding: '80px 28px',
-              borderRadius: '28px',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '54px'
-            }}
-          >
+          <aside className="explore-sidebar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', paddingBottom: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
               <div style={{ width: '46px', height: '46px', borderRadius: '14px', backgroundColor: 'rgba(200, 245, 66, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Trophy size={24} style={{ color: '#c8f542', margin: 'auto' }} />
