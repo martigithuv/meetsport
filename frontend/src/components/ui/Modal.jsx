@@ -7,15 +7,31 @@ import { X } from 'lucide-react';
  * No internal scroll inside the modal.
  */
 const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
-  // Prevent background page scrolling when modal is open
+  // The overlay is position:fixed and scrollable — no need to lock the body.
+  // We only save/restore scroll position to prevent jumpiness.
   useEffect(() => {
     if (isOpen) {
+      const scrollY = window.scrollY;
+      document.body.dataset.scrollY = scrollY;
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
     } else {
+      const scrollY = document.body.dataset.scrollY || '0';
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, parseInt(scrollY));
     }
     return () => {
+      const scrollY = document.body.dataset.scrollY || '0';
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, parseInt(scrollY));
     };
   }, [isOpen]);
 
