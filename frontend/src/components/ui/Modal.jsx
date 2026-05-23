@@ -3,14 +3,11 @@ import { X } from 'lucide-react';
 
 /**
  * Reusable modal component.
- * Props:
- *  - isOpen: boolean to control visibility
- *  - onClose: callback to close the modal
- *  - children: modal body content
- *  - maxWidth: optional max-width for the modal content (default 620px)
+ * The overlay is scrollable — the modal content grows naturally.
+ * No internal scroll inside the modal.
  */
 const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
-  // Prevent background scrolling when modal is open
+  // Prevent background page scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -24,6 +21,7 @@ const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
 
   if (!isOpen) return null;
 
+  // Scrollable overlay — acts as the scroll container
   const overlayStyle = {
     position: 'fixed',
     top: 0,
@@ -32,13 +30,15 @@ const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
     height: '100%',
     background: 'rgba(0, 0, 0, 0.8)',
     backdropFilter: 'blur(8px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflowY: 'auto',       // scroll happens HERE, on the overlay
     zIndex: 2000,
-    padding: '1rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start', // align top so tall modals scroll naturally
+    padding: '3rem 1rem',     // breathing room top/bottom
   };
 
+  // Modal content — grows naturally, no maxHeight, no internal scroll
   const contentStyle = {
     background: '#111116',
     border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -48,26 +48,28 @@ const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
     maxWidth,
     position: 'relative',
     boxShadow: '0 30px 60px rgba(0, 0, 0, 0.6)',
-    maxHeight: '90vh', // fits within viewport
-    overflowY: 'auto', // scroll if content exceeds
+    flexShrink: 0,            // don't shrink, grow naturally
   };
 
+  // Close button — sticky so it's always visible while scrolling
   const closeButtonStyle = {
-    position: 'absolute',
-    top: '1.25rem',
-    right: '1.25rem',
-    color: 'var(--color-muted3)',
-    background: 'rgba(255, 255, 255, 0.05)',
+    position: 'sticky',
+    top: '0',
+    float: 'right',
+    color: '#a1a1aa',
+    background: 'rgba(255, 255, 255, 0.08)',
+    border: 'none',
     borderRadius: '8px',
-    padding: '4px',
+    padding: '6px',
     cursor: 'pointer',
     zIndex: 50,
+    marginBottom: '-2rem',
   };
 
   return (
     <div style={overlayStyle} onClick={onClose}>
       <div style={contentStyle} onClick={(e) => e.stopPropagation()}>
-        <button style={closeButtonStyle} onClick={onClose} aria-label="Close modal">
+        <button style={closeButtonStyle} onClick={onClose} aria-label="Tancar modal">
           <X size={20} />
         </button>
         {children}
@@ -77,4 +79,3 @@ const Modal = ({ isOpen, onClose, children, maxWidth = '620px' }) => {
 };
 
 export default Modal;
-
