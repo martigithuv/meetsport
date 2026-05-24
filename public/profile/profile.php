@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "El meu Perfil";
-$extraCSS = "style.css?v=2.0";
+$extraCSS = "style.css";
 include "../partials/header.php";
 ?>
 
@@ -44,18 +44,34 @@ include "../partials/header.php";
         <div class="profile-header">
             <div class="avatar-section">
                 <div class="avatar-controls">
-                    <div class="avatar-card" id="avatar-card">
-                        <div class="avatar-placeholder">🧑‍🦱</div>
-                        <div class="avatar-hover">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-                            </svg>
-                            <span>Canviar</span>
-                        </div>
-                        <input type="file" id="avatar-input" hidden accept="image/*">
-                    </div>
-                    <button class="btn-avatar-upload" id="avatar-upload-btn" type="button">Canviar foto</button>
-                </div>
+        <div class="avatar-card" id="avatar-card" style="
+            width:120px !important;
+            height:120px !important;
+            min-width:120px !important;
+            max-width:120px !important;
+            border-radius:50% !important;
+            overflow:hidden !important;
+            position:relative !important;
+            flex-shrink:0 !important;
+            display:flex !important;
+            align-items:center;
+            justify-content:center;
+            background:var(--color-dark3);
+            border:3px solid var(--color-lime);
+            box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 4px rgba(200,245,66,0.15);
+            cursor:pointer;
+        ">
+            <div class="avatar-placeholder">🧑‍🦱</div>
+            <div class="avatar-hover">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                </svg>
+                <span>Canviar</span>
+            </div>
+            <input type="file" id="avatar-input" hidden accept="image/*">
+        </div>
+        <button class="btn-avatar-upload" id="avatar-upload-btn" type="button">Canviar foto</button>
+    </div>
                 <div class="user-info">
                     <div class="name-badge">
                         <h1 id="profile-name" class="font-display">Carregant...</h1>
@@ -101,6 +117,6 @@ include "../partials/header.php";
     </div>
 </main>
 
-<script src="script.js?v=2.0"></script>
+<script src="script.js?v=2.1"></script>
 
 <?php include "../partials/footer.php"; ?>

@@ -428,7 +428,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     avatarCard.insertBefore(img, avatarCard.firstChild);
                 }
                 img.src = statsData.profileDetails.avatar;
-                img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;';
+                // position:absolute dins del contenidor relatiu (120x120px) → mai pot expandir-lo
+                img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:50%;display:block;pointer-events:none;';
                 // Amagar el placeholder emoji si existeix
                 if (placeholder) placeholder.style.display = 'none';
             }
