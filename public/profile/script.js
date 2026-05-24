@@ -417,7 +417,21 @@ document.addEventListener('DOMContentLoaded', function () {
         
         const avatarImg = avatarCard ? avatarCard.querySelector('img') || avatarCard.querySelector('.avatar-placeholder') : null;
         if (statsData.profileDetails?.avatar) {
-            if (avatarCard) avatarCard.innerHTML = `<img src="${statsData.profileDetails.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
+            if (avatarCard) {
+                // Inserir o actualitzar NOMÉS la imatge, sense destruir l'overlay i l'input
+                let img = avatarCard.querySelector('img');
+                const placeholder = avatarCard.querySelector('.avatar-placeholder');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.alt = 'Avatar';
+                    // Inserir la imatge com a primer fill (sota l'overlay)
+                    avatarCard.insertBefore(img, avatarCard.firstChild);
+                }
+                img.src = statsData.profileDetails.avatar;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;';
+                // Amagar el placeholder emoji si existeix
+                if (placeholder) placeholder.style.display = 'none';
+            }
         }
 
         if (countPoints) countPoints.innerText = statsData.total_points || 0;
