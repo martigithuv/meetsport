@@ -341,9 +341,3 @@ img {
         padding-bottom: 32px;
     }
 }
-
-/* Prevent overflow horitzontal global */
-html, body {
-    overflow-x: hidden;
-    max-width: 100%;
-}
