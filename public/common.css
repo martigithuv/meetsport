@@ -68,14 +68,35 @@ button {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 clamp(1rem, 5vw, 2rem);
+  width: 100%;
 }
 
 .pt-nav {
   /* Espacio suficiente para el header fijo + margen visual */
-  padding-top: 140px;
-  padding-bottom: 48px;
+  padding-top: clamp(80px, 12vh, 140px);
+  padding-bottom: clamp(24px, 4vh, 48px);
   min-height: calc(100vh - 58px);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 clamp(1rem, 4vw, 1.5rem);
+  }
+  .pt-nav {
+    padding-top: clamp(70px, 10vh, 100px);
+    padding-bottom: clamp(20px, 3vh, 32px);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .pt-nav {
+    padding-top: 70px;
+    padding-bottom: 20px;
+  }
 }
 
 @keyframes fade-in {
@@ -90,16 +111,17 @@ button {
 .btn-primary {
     background: var(--color-lime);
     color: var(--color-dark);
-    padding: 1rem 2rem;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2rem);
     border-radius: 16px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
     box-shadow: 0 10px 20px rgba(200, 245, 66, 0.2);
     transition: all 0.3s ease;
+    min-height: 44px;
 }
 
 .btn-primary:hover {
@@ -112,12 +134,13 @@ button {
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-light);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem 2rem;
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.25rem, 4vw, 2rem);
     border-radius: 16px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    min-height: 44px;
 }
 
 .btn-secondary:hover {
@@ -135,22 +158,24 @@ button {
 /* Shared Grid & Card Styles */
 .explore-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(clamp(250px, 80vw, 280px), 1fr));
     grid-auto-rows: 1fr;
-    gap: 1.25rem;
+    gap: clamp(1rem, 3vw, 1.25rem);
+    width: 100%;
 }
 
 .activity-card {
     background: var(--color-dark2);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    padding: 1.1rem;
+    padding: clamp(0.8rem, 2vw, 1.1rem);
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 260px;
 }
 
 .activity-card:hover {
@@ -160,30 +185,34 @@ button {
 
 .card-tags {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex-wrap: wrap;
     margin-bottom: 0.8rem;
-    padding-left: 2.5rem !important; /* Increased padding further to ensure no overlap */
 }
 
 .tag-sport {
     background: rgba(200, 245, 66, 0.1);
     color: var(--color-lime);
-    font-size: 0.6rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.6rem);
     font-weight: 700;
     padding: 3px 8px;
     border-radius: 100px;
     border: 1px solid rgba(200, 245, 66, 0.2);
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .tag-slots {
-    font-size: 0.6rem;
+    font-size: clamp(0.55rem, 1.2vw, 0.6rem);
     font-weight: 700;
     padding: 3px 8px;
     border-radius: 100px;
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-muted3);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .tag-slots.full {
@@ -193,17 +222,21 @@ button {
 }
 
 .activity-card h3 {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1rem);
     margin-bottom: 0.4rem;
     font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
 }
 
 .activity-card p {
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 1.2vw, 0.75rem);
     color: var(--color-muted);
     line-height: 1.4;
     overflow: hidden;
     max-height: calc(1.4em * 2);
+    word-break: break-word;
 }
 
 .btn-fav {

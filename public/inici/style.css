@@ -1,5 +1,5 @@
 .inici-main {
-    padding-top: 80px;
+    padding-top: clamp(60px, 8vh, 100px);
 }
 
 .hero {
@@ -8,7 +8,9 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 6rem;
+    padding-bottom: clamp(3rem, 6vh, 6rem);
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
 }
 
 .hero-bg {
@@ -35,7 +37,8 @@
     position: relative;
     z-index: 10;
     max-width: 800px;
-    padding-top: 6rem;
+    padding-top: clamp(3rem, 6vh, 6rem);
+    width: 100%;
 }
 
 .status-badge {
@@ -44,33 +47,25 @@
     gap: 0.6rem;
     color: var(--color-lime);
     font-weight: 700;
-    font-size: 0.65rem;
+    font-size: clamp(0.5rem, 1vw, 0.65rem);
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    margin-bottom: 1.5rem;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background: var(--color-lime);
-    border-radius: 50%;
-    box-shadow: 0 0 12px var(--color-lime);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
 .hero-title {
-    font-size: 5.5rem;
+    font-size: clamp(2.5rem, 10vw, 5.5rem);
     line-height: 0.85;
     letter-spacing: -0.02em;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
     text-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
 .hero-desc {
     color: rgba(248, 248, 248, 0.7);
     max-width: 480px;
-    margin-bottom: 2.5rem;
-    font-size: 1.05rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
     font-weight: 500;
     line-height: 1.6;
 }
@@ -207,19 +202,19 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 2rem;
+    padding: clamp(1rem, 2vw, 2rem);
     z-index: 10;
 }
 
 .card-content h3 {
     font-family: var(--font-display);
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
     margin-bottom: 0.2rem;
 }
 
 .card-content p {
     color: var(--color-muted3);
-    font-size: 0.75rem;
+    font-size: clamp(0.6rem, 1vw, 0.75rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -230,14 +225,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: clamp(36px, 8vw, 44px);
+    height: clamp(36px, 8vw, 44px);
     background: var(--color-lime);
     color: var(--color-dark);
     border-radius: 12px;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .category-card:hover .card-btn {
@@ -255,41 +252,71 @@
         font-size: 4rem;
     }
     .stat-num {
-        font-size: 2.2rem;
+        font-size: clamp(1.8rem, 3vw, 2.2rem);
+    }
+    .section-header {
+        gap: 1rem;
     }
 }
 
 /* Tablet petit / mòbil gran ≤ 768px */
 @media (max-width: 768px) {
+    .inici-main {
+        padding-top: clamp(70px, 10vh, 90px);
+    }
+    .hero {
+        min-height: auto;
+        padding-bottom: clamp(2rem, 4vh, 4rem);
+    }
+    .hero-content {
+        padding-top: clamp(2rem, 4vh, 4rem);
+    }
     .hero-title {
         font-size: clamp(2.2rem, 7vw, 3.5rem);
     }
     .hero-desc {
-        font-size: 0.95rem;
+        font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+    }
+    .hero-actions {
+        flex-direction: row;
+        gap: clamp(0.75rem, 2vw, 1rem);
     }
     .hero-stats {
-        gap: 1.5rem;
+        gap: clamp(1rem, 2vw, 1.5rem);
         flex-wrap: wrap;
     }
     .stat-num {
-        font-size: 2rem;
+        font-size: clamp(1.6rem, 3vw, 2rem);
     }
     .section-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
-        margin-bottom: 2rem;
+        margin-bottom: clamp(1.5rem, 3vw, 2rem);
     }
     .section-header h2 {
-        font-size: 1.8rem;
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
     }
     .categories {
-        padding: 4rem 0;
+        padding: clamp(2rem, 4vw, 4rem) 0;
     }
 }
 
 /* Mòbil ≤ 480px */
 @media (max-width: 480px) {
+    .inici-main {
+        padding-top: 70px;
+    }
+    .hero {
+        min-height: calc(100vh - 70px);
+        padding-bottom: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .hero-content {
+        padding-top: 2rem;
+        width: 100%;
+    }
     .hero-title {
         font-size: clamp(1.8rem, 8vw, 2.5rem);
         line-height: 1;
@@ -300,6 +327,7 @@
     .hero-actions {
         flex-direction: column;
         gap: 0.75rem;
+        width: 100%;
     }
     .hero-actions .btn-primary,
     .hero-actions .btn-secondary {
@@ -307,19 +335,19 @@
         justify-content: center;
     }
     .hero-stats {
-        gap: 1rem;
+        gap: clamp(0.8rem, 2vw, 1rem);
         padding-top: 1.5rem;
     }
     .stat-num {
         font-size: 1.6rem;
     }
     .section-header h2 {
-        font-size: 1.5rem;
+        font-size: clamp(1.2rem, 4vw, 1.5rem);
     }
     .category-grid {
         grid-template-columns: 1fr;
     }
     .category-card {
-        height: 280px;
+        height: clamp(240px, 50vh, 280px);
     }
 }
