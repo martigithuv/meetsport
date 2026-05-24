@@ -320,3 +320,30 @@ button {
         transform: scale(1.4);
     }
 }
+
+/* ============================================================
+   RESPONSIVE GLOBALS — afegits al final, no modifiquen res
+   ============================================================ */
+
+/* Imatges mai surten del contenidor */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Container padding reduït en mòbil */
+@media (max-width: 640px) {
+    .container {
+        padding: 0 1rem;
+    }
+    .pt-nav {
+        padding-top: 100px;
+        padding-bottom: 32px;
+    }
+}
+
+/* Prevent overflow horitzontal global */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}

@@ -85,6 +85,37 @@
             color: #777;
             font-size: 0.8rem;
         }
+
+        /* ── RESPONSIVE ───────────────────────────── */
+        @media (max-width: 768px) {
+            .footer-content {
+                gap: 2rem;
+            }
+            .footer-links {
+                gap: 2rem;
+            }
+            .site-footer {
+                padding: 3rem 0 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .footer-brand p {
+                max-width: 100%;
+                font-size: 0.85rem;
+            }
+            .footer-col h4 {
+                margin-bottom: 1rem;
+            }
+        }
     </style>
 </body>
 </html>

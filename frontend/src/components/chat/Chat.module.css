@@ -441,7 +441,7 @@
 /* Mobile Responsiveness */
 @media (max-width: 1024px) {
   .sidebar {
-    width: 100%;
+    width: 320px;
   }
   .sidebarHidden {
     display: none;
@@ -451,5 +451,58 @@
   }
   .windowHidden {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .chatContainer {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 100px);
+    border-radius: 24px;
+  }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .sidebarHeader {
+    padding: 1.5rem;
+  }
+  .windowHeader {
+    padding: 1.25rem 1.5rem;
+  }
+  .messageList {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+  .inputArea {
+    padding: 1.25rem 1.5rem;
+  }
+  .bubble {
+    max-width: 85%;
+  }
+  .welcomeScreen {
+    padding: 2rem 1rem;
+  }
+  .welcomeIcon {
+    width: 8rem;
+    height: 8rem;
+  }
+  .welcomeScreen h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatContainer {
+    border-radius: 16px;
+  }
+  .headerDetails h3 {
+    font-size: 1.25rem;
+  }
+  .bubble {
+    max-width: 90%;
+    padding: 1rem 1.25rem;
   }
 }

@@ -1932,3 +1932,53 @@ img {
   height: auto;
 }
 
+/* ============================================================
+   RESPONSIVE FINALS — frontend (afegit al final, res modificat)
+   ============================================================ */
+
+/* CTA button i h2 — complementa el breakpoint ≤768px ja existent */
+@media (max-width: 480px) {
+  .cta-card-v2 h2 {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+    letter-spacing: -0.5px;
+    margin-bottom: 2rem;
+  }
+  .btn-cta-v2 {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 18px;
+    gap: 0.75rem;
+  }
+  .cta-card-v2 {
+    padding: 3.5rem 1.25rem;
+    border-radius: 36px;
+  }
+}
+
+/* Hero i auth ≤ 360px (pantalles molt petites) */
+@media (max-width: 360px) {
+  .hero-v2-content {
+    padding: 1.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 20px;
+  }
+  .hero-v2-stats {
+    gap: 0.75rem;
+  }
+  .auth-card {
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 20px;
+  }
+  .auth-container {
+    padding: 1rem 0.75rem;
+  }
+}
+
+/* chatContainer mòbil petit */
+@media (max-width: 480px) {
+  .chatContainer {
+    border-radius: 16px;
+  }
+}
+
+

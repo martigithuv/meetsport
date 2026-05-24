@@ -533,3 +533,111 @@
     background: rgba(239, 68, 68, 0.2);
     border-color: rgba(239, 68, 68, 0.5);
 }
+
+/* ============================================================
+   RESPONSIVE — profile (afegit al final, res modificat)
+   ============================================================ */
+
+/* Tablet ≤ 1024px */
+@media (max-width: 1024px) {
+    .name-badge h1 {
+        font-size: 2.8rem;
+    }
+    .profile-stats {
+        gap: 1.5rem;
+        padding: 1.25rem 2rem;
+    }
+}
+
+/* Tablet petit / mòbil gran ≤ 768px */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    .name-badge h1 {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+    }
+    .profile-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        width: 100%;
+    }
+    .stat-item {
+        flex: 1;
+        min-width: 80px;
+    }
+    .tab-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.72rem;
+        white-space: nowrap;
+    }
+    .settings-card {
+        max-width: 100%;
+        padding: 1.5rem;
+        border-radius: 20px;
+    }
+    .profile-banner {
+        height: 180px;
+    }
+    .profile-content {
+        margin-top: -70px;
+    }
+}
+
+/* Mòbil ≤ 480px */
+@media (max-width: 480px) {
+    .avatar-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+    .avatar-card {
+        width: 120px;
+        height: 120px;
+        border-radius: 36px;
+        font-size: 3rem;
+    }
+    .name-badge {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    .name-badge h1 {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+    .profile-stats {
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    .stat-val {
+        font-size: 1.2rem;
+    }
+    .profile-header {
+        align-items: center;
+    }
+    .tab-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.68rem;
+    }
+    .profile-banner {
+        height: 140px;
+    }
+    .profile-content {
+        margin-top: -50px;
+    }
+    .settings-card {
+        padding: 1.25rem 1rem;
+        border-radius: 16px;
+    }
+    .inscripcions-container {
+        grid-template-columns: 1fr;
+    }
+    .visit-grid {
+        grid-template-columns: 1fr;
+    }
+}
