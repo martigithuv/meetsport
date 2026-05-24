@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "El meu Perfil";
-$extraCSS = "style.css";
+$extraCSS = "style.css?v=2.0";
 include "../partials/header.php";
 ?>
 
@@ -101,6 +101,6 @@ include "../partials/header.php";
     </div>
 </main>
 
-<script src="script.js?v=1.9"></script>
+<script src="script.js?v=2.0"></script>
 
 <?php include "../partials/footer.php"; ?>
