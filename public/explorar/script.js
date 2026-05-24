@@ -285,20 +285,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (hasImages) {
             imagesHTML = `
                 <div style="margin-bottom:1.5rem;">
-                    <div id="modal-images-carousel" style="position:relative; width:100%; height:280px; border-radius:16px; overflow:hidden; background:rgba(0,0,0,0.3);">
+                    <div id="modal-images-carousel" style="position:relative; width:100%; height:200px; border-radius:16px; overflow:hidden; background:rgba(0,0,0,0.3);">
                         <img id="modal-main-image" src="${act.images[0]}" style="width:100%; height:100%; object-fit:cover; display:block;">
                         ${act.images.length > 1 ? `
-                            <button id="prev-image" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:white; border:none; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center;">❮</button>
-                            <button id="next-image" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:white; border:none; width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center;">❯</button>
-                            <div style="position:absolute; bottom:10px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.6); color:white; padding:0.3rem 0.8rem; border-radius:20px; font-size:0.75rem;">
+                            <button id="prev-image" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">❮</button>
+                            <button id="next-image" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.6); color:white; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">❯</button>
+                            <div style="position:absolute; bottom:8px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.6); color:white; padding:0.25rem 0.7rem; border-radius:20px; font-size:0.7rem;">
                                 <span id="image-counter">1</span>/${act.images.length}
                             </div>
                         ` : ''}
                     </div>
                     ${act.images.length > 1 ? `
-                        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); gap:0.5rem; margin-top:0.75rem;">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(54px, 1fr)); gap:0.4rem; margin-top:0.6rem;">
                             ${act.images.map((img, idx) => `
-                                <img src="${img}" class="modal-thumbnail" style="width:100%; height:70px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid ${idx === 0 ? 'var(--color-lime)' : 'transparent'}; transition:all 0.2s;" onclick="selectImage(${idx})">
+                                <img src="${img}" class="modal-thumbnail" style="width:100%; height:54px; object-fit:cover; border-radius:6px; cursor:pointer; border:2px solid ${idx === 0 ? 'var(--color-lime)' : 'transparent'}; transition:all 0.2s;" onclick="selectImage(${idx})">
                             `).join('')}
                         </div>
                     ` : ''}
