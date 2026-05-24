@@ -19,12 +19,19 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-dark);
   color: var(--color-light);
   font-family: var(--font-head);
   line-height: 1.5;
   overflow-x: hidden;
+  overflow-y: auto; /* Sempre permet scroll vertical */
+  min-height: 100vh;
 }
 
 a {
