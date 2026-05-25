@@ -42,4 +42,22 @@ router.get('/verify-session', protect, async (req, res) => {
   }
 });
 
+// @desc    Cancelar Premium
+// @route   POST /api/stripe/cancel-premium
+// @access  Private
+router.post('/cancel-premium', protect, async (req, res) => {
+  try {
+    const User = require('../models/User');
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: 'Usuari no trobat' });
+
+    user.isPremium = false;
+    await user.save();
+
+    res.json({ success: true, message: 'S\'ha cancel·lat el teu pla Premium' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al cancel·lar el pla', error: error.message });
+  }
+});
+
 module.exports = router;

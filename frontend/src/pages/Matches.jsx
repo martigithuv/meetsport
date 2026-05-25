@@ -68,7 +68,7 @@ const Matches = () => {
       const response = await api.get(`/messages/${otherId}`);
       setMessages(response.data.map(m => ({
         ...m,
-        isMe: m.senderId === user._id
+        isMe: m.isMe !== undefined ? m.isMe : (m.senderId === user._id)
       })));
     } catch (err) {
       console.error('Error fetching history:', err);

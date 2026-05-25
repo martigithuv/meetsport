@@ -27,6 +27,24 @@ const Premium = () => {
     }
   };
 
+  const handleCancelPremium = async () => {
+    if (window.confirm("Estàs segur que vols cancel·lar el teu pla Premium? Perdràs l'accés a tots els avantatges exclusius de manera immediata.")) {
+      try {
+        const response = await api.post('/stripe/cancel-premium');
+        if (response.data.success) {
+          showToast('Has cancel·lat el teu pla Premium.', 'success');
+          // Wait briefly for the toast to appear, then reload so the context updates
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Error al cancel·lar el pla', 'error');
+      }
+    }
+  };
+
   return (
     <div className="premium-page py-10 md:py-20 flex flex-col items-center justify-center min-h-[calc(100vh-140px)] animate-fade-in overflow-x-hidden">
       <header className="text-center mb-16 px-4">
@@ -58,11 +76,12 @@ const Premium = () => {
             </div>
 
             <button 
-              className="mt-auto self-center py-4 px-10 lg:px-14 bg-white/5 text-muted3 font-bold border border-white/5 cursor-not-allowed text-base lg:text-xl uppercase tracking-widest w-full sm:w-auto" 
+              onClick={user?.isPremium ? handleCancelPremium : undefined}
+              className={`mt-auto self-center py-4 px-10 lg:px-14 font-bold border text-base lg:text-xl uppercase tracking-widest w-full sm:w-auto transition-all ${user?.isPremium ? 'bg-red-500/10 text-red-500 border-red-500/20 hover:bg-red-500/20 cursor-pointer' : 'bg-white/5 text-muted3 border-white/5 cursor-not-allowed'}`} 
               style={{ borderRadius: '24px', marginTop: '40px' }}
-              disabled
+              disabled={!user?.isPremium}
             >
-              {user.isPremium ? 'Pla actual' : 'Pla bàsic'}
+              {user?.isPremium ? 'Tornar al Pla Free' : 'Pla actual (Actiu)'}
             </button>
           </div>
 
@@ -94,11 +113,11 @@ const Premium = () => {
 
             <button
               onClick={handleActivatePremium}
-              className={`mt-auto self-center py-4 px-10 lg:px-14 font-black transition-all text-base lg:text-xl uppercase tracking-widest w-full sm:w-auto ${user.isPremium ? 'bg-white/5 text-muted3 border border-white/5 cursor-not-allowed' : 'bg-orange text-white shadow-2xl shadow-orange/40 hover:bg-orange/90 hover:shadow-orange/60 active:scale-[0.98]'}`}
+              className={`mt-auto self-center py-4 px-10 lg:px-14 font-black transition-all text-base lg:text-xl uppercase tracking-widest w-full sm:w-auto ${user?.isPremium ? 'bg-white/5 text-lime border border-white/5 cursor-not-allowed' : 'bg-orange text-white shadow-2xl shadow-orange/40 hover:bg-orange/90 hover:shadow-orange/60 active:scale-[0.98]'}`}
               style={{ borderRadius: '24px', marginTop: '40px' }}
-              disabled={user.isPremium}
+              disabled={user?.isPremium}
             >
-              {user.isPremium ? 'Pla actual' : 'Activar Premium'}
+              {user?.isPremium ? 'Pla actual (Actiu)' : 'Activar Premium'}
             </button>
           </div>
         </div>

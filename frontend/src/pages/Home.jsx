@@ -71,13 +71,12 @@ const Home = () => {
 
         <div className="carousel-container">
           {categories.map((cat, idx) => (
-            <Link to={`/explore?category=${cat.link}`} key={idx} className="category-card-v2">
+            <div key={idx} className="category-card-v2" style={{ cursor: 'default' }}>
               <img src={cat.img} alt={cat.name} />
               <div className="category-card-overlay">
                 <h4>{cat.name}</h4>
-                <p>{cat.activities} activitats</p>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </section>

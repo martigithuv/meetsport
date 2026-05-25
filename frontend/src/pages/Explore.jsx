@@ -259,13 +259,13 @@ const Explore = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-5 w-full justify-center max-w-4xl">
-          <div className="relative group flex-1">
-            <Search className="absolute left-8 top-1/2 -translate-y-1/2 text-muted3 group-focus-within:text-lime transition-colors" size={24} />
+          <div className="flex flex-1 items-center bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus-within:border-lime/40 focus-within:bg-white/[0.08] transition-all shadow-2xl w-full group">
+            <Search className="text-muted3 group-focus-within:text-lime transition-colors shrink-0" size={24} />
             <input 
               type="text" 
               placeholder={searchMode === 'activities' ? "Cerca per títol o esport..." : "Cerca usuaris per nom o email..."} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 pr-8 text-base text-white outline-none focus:border-lime/40 focus:bg-white/[0.08] transition-all shadow-2xl"
-              style={{ paddingLeft: '76px' }}
+              className="w-full bg-transparent border-none outline-none focus:ring-0 text-base text-white ml-4 placeholder:text-white/50"
+              style={{ background: 'transparent', color: 'white' }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -496,9 +496,9 @@ const Explore = () => {
         )}
 
         {/* Right side: Activities Grid */}
-        <div style={{ flex: 1, width: '100%' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           {searchMode === 'users' ? (
-            <div className="activities-responsive-grid">
+            <div className="activities-responsive-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
               {searchingUsers ? (
                 <div className="col-span-full flex justify-center py-20"><div className="w-10 h-10 border-4 border-lime/20 border-t-lime rounded-full animate-spin"></div></div>
               ) : usersList.length > 0 ? (
@@ -513,8 +513,10 @@ const Explore = () => {
                         </div>
                       )}
                       {u.isPremium && (
-                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-lime to-[#a3e635] text-dark text-[8px] font-black uppercase tracking-widest py-1 px-3 rounded-full shadow-lg shadow-lime/20 border border-lime/50">
-                          Premium
+                        <div className="absolute -bottom-1 -right-1 bg-[#15161a] rounded-full p-1 border-2 border-[#121217]" title="Usuari Premium">
+                          <div className="bg-gradient-to-br from-lime to-[#a3e635] w-6 h-6 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(200,245,66,0.5)]">
+                            <Trophy size={12} className="text-[#15161a]" />
+                          </div>
                         </div>
                       )}
                     </div>
@@ -542,7 +544,7 @@ const Explore = () => {
               <div className="w-16 h-16 border-4 border-lime/10 border-t-lime rounded-full animate-spin"></div>
             </div>
           ) : (
-            <div className="activities-responsive-grid">
+            <div className="activities-responsive-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(480px, 1fr))' }}>
               {filteredActivities.length > 0 ? (
                 filteredActivities.map(act => (
                   <ActivityCard 
@@ -567,9 +569,9 @@ const Explore = () => {
       </div>
 
       {/* REFINED PREMIUM MODAL */}
-      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="1150px">
+      <Modal isOpen={!!selectedActivity} onClose={() => { setSelectedActivity(null); setShowParticipants(false); }} maxWidth="1150px" clean={true}>
           {selectedActivity && (
-            <div className="activity-modal-premium-final p-0 overflow-visible font-display bg-[#0c0c10] rounded-[32px] border border-white/10 shadow-2xl relative">
+            <div className="activity-modal-premium-final p-0 overflow-visible font-display rounded-[32px] border border-white/10 shadow-2xl relative" style={{ backgroundColor: '#0c0c10' }}>
             
             {/* Header */}
             <div className="relative h-[130px] flex items-end p-6 md:px-8 overflow-hidden">
@@ -578,7 +580,7 @@ const Explore = () => {
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-lime/10 to-transparent"></div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c10] via-[#0c0c10]/85 to-transparent"></div>
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #0c0c10, rgba(12,12,16,0.85), transparent)' }}></div>
               
               <div className="relative z-10 w-full flex justify-between items-end">
                 <div>

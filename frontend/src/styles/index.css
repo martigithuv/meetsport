@@ -1817,27 +1817,9 @@ html {
 /* Activities grid — responsive columns */
 .activities-responsive-grid {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
   width: 100%;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .activities-responsive-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  .activities-responsive-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1600px) {
-  .activities-responsive-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
 }
 
 /* Explore page header responsive */

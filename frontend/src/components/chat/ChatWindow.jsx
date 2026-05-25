@@ -16,10 +16,12 @@ const ChatWindow = ({
   onFileUpload,
   hidden 
 }) => {
-  const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   }, [messages]);
 
   if (!activeChat) {
@@ -63,7 +65,7 @@ const ChatWindow = ({
 
       </header>
 
-      <div className={styles.messageList}>
+      <div className={styles.messageList} ref={containerRef}>
         {messages.length > 0 ? (
           messages.map((msg, idx) => (
             <MessageBubble key={msg._id || idx} msg={msg} />
@@ -74,7 +76,6 @@ const ChatWindow = ({
             <p className="text-sm font-black uppercase tracking-[0.3em]">No hi ha missatges encara</p>
           </div>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
       <MessageInput 

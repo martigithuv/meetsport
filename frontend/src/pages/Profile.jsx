@@ -422,7 +422,7 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row items-center md:items-end gap-10 mb-12">
           {/* Avatar with Ring */}
           <div className="flex flex-col items-center relative group">
-          <div className={`w-40 h-40 rounded-[48px] overflow-hidden border-4 ${user.isPremium ? 'border-orange shadow-[0_0_30px_rgba(255,107,43,0.3)]' : 'border-lime shadow-[0_0_30px_rgba(200,245,66,0.2)]'} bg-dark2 transition-transform duration-500 group-hover:scale-105`}
+          <div className={`w-24 h-24 rounded-full overflow-hidden border-4 ${user.isPremium ? 'border-orange shadow-[0_0_30px_rgba(255,107,43,0.3)]' : 'border-lime shadow-[0_0_30px_rgba(200,245,66,0.2)]'} bg-dark2 transition-transform duration-500 group-hover:scale-105`}
             >
                 {stats?.profileDetails?.avatar
                   ? <img src={stats.profileDetails.avatar} className="w-full h-full object-cover" alt="Profile" />

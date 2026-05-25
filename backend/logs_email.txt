@@ -216,3 +216,200 @@
 --- SERVIDOR REINICIAT EL 22/5/2026, 9:26:36 ---
 
 --- SERVIDOR REINICIAT EL 22/5/2026, 10:00:15 ---
+
+--- SERVIDOR REINICIAT EL 25/5/2026, 9:22:43 ---
+
+--- SERVIDOR REINICIAT EL 25/5/2026, 9:25:08 ---
+
+[25/5/2026, 9:25:57]
+A: miki@gmail.com
+ASSUMPTE: Benvingut a MeetSport! 🎾
+CONTINGUT: 
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+          <h2 style="color: #C8F542;">Hola miki!</h2>
+          <p>Estem molt feliços de tenir-te a la nostra plataforma. Prepara't per fer match i gaudir de l'esport!</p>
+          <p>Ja pots començar a explorar activitats a la teva zona.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:28:03]
+A: joancostals55@gmail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola Joan Costals Gelabert!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>miki</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "perra"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:33:44]
+A: miki@gmail.com
+ASSUMPTE: ✅ Has publicat una nova activitat!
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>Enhorabona miki!</h2>
+          <p><b>Has publicat una nova activitat:</b> Partit Padel 2V2</p>
+          <p>Ara només cal esperar que altres atletes s'hi uneixin.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:35:07]
+A: miki@gmail.com
+ASSUMPTE: ✅ Has publicat una nova activitat!
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>Enhorabona miki!</h2>
+          <p><b>Has publicat una nova activitat:</b> Padel</p>
+          <p>Ara només cal esperar que altres atletes s'hi uneixin.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:39:49]
+A: miki@gmail.com
+ASSUMPTE: ✅ Has publicat una nova activitat!
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>Enhorabona miki!</h2>
+          <p><b>Has publicat una nova activitat:</b> Test</p>
+          <p>Ara només cal esperar que altres atletes s'hi uneixin.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:40:35]
+A: juan@mail.com
+ASSUMPTE: Benvingut a MeetSport! 🎾
+CONTINGUT: 
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+          <h2 style="color: #C8F542;">Hola juan!</h2>
+          <p>Estem molt feliços de tenir-te a la nostra plataforma. Prepara't per fer match i gaudir de l'esport!</p>
+          <p>Ja pots començar a explorar activitats a la teva zona.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:40:45]
+A: miki@gmail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola miki!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>juan</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "ke pasa bala"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:41:54]
+A: miki@mail.com
+ASSUMPTE: Benvingut a MeetSport! 🎾
+CONTINGUT: 
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+          <h2 style="color: #C8F542;">Hola miki!</h2>
+          <p>Estem molt feliços de tenir-te a la nostra plataforma. Prepara't per fer match i gaudir de l'esport!</p>
+          <p>Ja pots començar a explorar activitats a la teva zona.</p>
+          <br/>
+          <p>Equip de MeetSport</p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:42:06]
+A: juan@mail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola juan!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>miki</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "perra"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 9:42:19]
+A: miki@mail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola miki!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>juan</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "perra tu "
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+--- SERVIDOR REINICIAT EL 25/5/2026, 9:48:01 ---
+
+[25/5/2026, 10:01:12]
+A: juan@mail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola juan!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>miki</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "guarra"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 10:04:40]
+A: juan@mail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola juan!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>miki</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "toma"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+[25/5/2026, 10:21:04]
+A: juan@mail.com
+ASSUMPTE: 📩 Tens una nova notificació de MeetSport
+CONTINGUT: 
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h3>Hola juan!</h3>
+          <p>Revisa la teva missatgeria, tens una nova notificació de <b>miki</b>.</p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 5px solid #C8F542;">
+            "BARROKA"
+          </blockquote>
+          <p><a href="http://localhost:5173/matches">Vés al xat</a></p>
+        </div>
+      
+------------------------------------------------
+
+--- SERVIDOR REINICIAT EL 25/5/2026, 10:23:40 ---
