@@ -157,7 +157,7 @@ async function checkAndAwardBadges(userId, io = null) {
     const joinedCount = await Activity.countDocuments({ participants: userId });
     const createdCount = await Activity.countDocuments({ creator: userId });
     if (joinedCount + createdCount >= 1) {
-      const badge = await Badge.findOne({ name: 'Primera Actividad' });
+      const badge = await Badge.findOne({ name: 'Primera Activitat' });
       if (badge) {
         const existingUserBadge = await UserBadge.findOne({ user: userId, badge: badge._id });
         if (!existingUserBadge) {
@@ -183,7 +183,7 @@ async function checkAndAwardBadges(userId, io = null) {
 
     // 3. Verificar medalla de 1000 puntos
     if (user.total_points >= 1000) {
-      const badge = await Badge.findOne({ name: '1000 Puntos' });
+      const badge = await Badge.findOne({ name: '1000 Punts' });
       if (badge) {
         const existingUserBadge = await UserBadge.findOne({ user: userId, badge: badge._id });
         if (!existingUserBadge) {
@@ -212,7 +212,7 @@ async function checkAndAwardBadges(userId, io = null) {
     if (ratings.length >= 5) {
       const avgRating = ratings.reduce((sum, r) => sum + r.ratingValue, 0) / ratings.length;
       if (avgRating >= 4.5) {
-        const badge = await Badge.findOne({ name: 'Usuario Fiable' });
+        const badge = await Badge.findOne({ name: 'Usuari Fiable' });
         if (badge) {
           const existingUserBadge = await UserBadge.findOne({ user: userId, badge: badge._id });
           if (!existingUserBadge) {

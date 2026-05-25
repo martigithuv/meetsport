@@ -102,38 +102,38 @@ exports.awardBadge = async (req, res) => {
 const initializeBadgesLogic = async () => {
   const defaultBadges = [
     {
-      name: 'Primera Actividad',
-      description: 'Completaste tu primera actividad',
+      name: 'Primera Activitat',
+      description: 'Has completat la teva primera activitat',
       icon: '🎯',
-      requirement: 'Participar en 1 actividad',
+      requirement: 'Participar en 1 activitat',
       type: 'ACTIVITIES'
     },
     {
-      name: '1000 Puntos',
-      description: 'Alcanzaste 1000 puntos',
+      name: '1000 Punts',
+      description: 'Has assolit 1000 punts',
       icon: '⭐',
-      requirement: 'Acumular 1000 puntos',
+      requirement: 'Acumular 1000 punts',
       type: 'POINTS'
     },
     {
-      name: '5000 Puntos',
-      description: 'Alcanzaste 5000 puntos',
+      name: '5000 Punts',
+      description: 'Has assolit 5000 punts',
       icon: '💎',
-      requirement: 'Acumular 5000 puntos',
+      requirement: 'Acumular 5000 punts',
       type: 'POINTS'
     },
     {
-      name: 'Usuario Fiable',
-      description: 'Tienes una calificación promedio de 4.5+ estrellas',
+      name: 'Usuari Fiable',
+      description: 'Tens una qualificació mitjana de 4.5+ estrelles',
       icon: '✅',
-      requirement: 'Promedio de rating >= 4.5 estrellas',
+      requirement: 'Mitjana de valoració >= 4.5 estrelles',
       type: 'RELIABILITY'
     },
     {
-      name: 'Organizador Activo',
-      description: 'Organizaste 5 actividades',
+      name: 'Organitzador Actiu',
+      description: 'Has organitzat 5 activitats',
       icon: '🏆',
-      requirement: 'Crear 5 actividades',
+      requirement: 'Crear 5 activitats',
       type: 'ORGANIZER'
     }
   ];

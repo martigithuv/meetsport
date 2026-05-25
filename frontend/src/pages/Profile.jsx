@@ -540,20 +540,20 @@ const Profile = () => {
                     // Progress indicators
                     let progressPercent = 0;
                     let progressLabel = '';
-                    if (badge.name === 'Primera Actividad') {
+                    if (badge.name === 'Primera Activitat') {
                       const totalActs = activities.length + enrollments.length;
                       progressPercent = Math.min((totalActs / 1) * 100, 100);
                       progressLabel = `${totalActs} / 1 ACT`;
-                    } else if (badge.name === 'Organizador Activo') {
+                    } else if (badge.name === 'Organitzador Actiu') {
                       progressPercent = Math.min((activities.length / 5) * 100, 100);
                       progressLabel = `${activities.length} / 5 ACTS CREADES`;
-                    } else if (badge.name === '1000 Puntos') {
+                    } else if (badge.name === '1000 Punts') {
                       progressPercent = Math.min(((stats?.total_points || 0) / 1000) * 100, 100);
                       progressLabel = `${stats?.total_points || 0} / 1000 Pts`;
-                    } else if (badge.name === '5000 Puntos') {
+                    } else if (badge.name === '5000 Punts') {
                       progressPercent = Math.min(((stats?.total_points || 0) / 5000) * 100, 100);
                       progressLabel = `${stats?.total_points || 0} / 5000 Pts`;
-                    } else if (badge.name === 'Usuario Fiable') {
+                    } else if (badge.name === 'Usuari Fiable') {
                       progressPercent = ratings.length >= 5 ? 100 : Math.min((ratings.length / 5) * 100, 100);
                       progressLabel = `${ratings.length} / 5 VALORACIONS`;
                     }
