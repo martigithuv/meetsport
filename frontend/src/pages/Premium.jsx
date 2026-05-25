@@ -5,11 +5,11 @@ import { Check, X, Zap, Crown, Search, ShieldCheck, Heart, Paperclip, Eye } from
 import { useToast } from '../context/ToastContext';
 
 const Premium = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { showToast } = useToast();
 
   const handleActivatePremium = async () => {
-    if (user.isPremium) {
+    if (user?.isPremium) {
       showToast('Ja disposes del pla Premium! Gaudeix dels teus avantatges.', 'info');
       return;
     }
@@ -33,10 +33,7 @@ const Premium = () => {
         const response = await api.post('/stripe/cancel-premium');
         if (response.data.success) {
           showToast('Has cancel·lat el teu pla Premium.', 'success');
-          // Wait briefly for the toast to appear, then reload so the context updates
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          updateUser({ isPremium: false });
         }
       } catch (err) {
         console.error(err);
