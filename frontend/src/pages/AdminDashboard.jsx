@@ -241,9 +241,7 @@ const AdminDashboard = () => {
                         <button onClick={() => setDeductModal({ isOpen: true, user: u })} className="p-2 bg-white/5 rounded-lg text-orange hover:bg-orange/20 transition-colors" title="Restar punts">
                           <Star size={16} />
                         </button>
-                        <button onClick={() => toggleBlock(u._id)} className="p-2 bg-white/5 rounded-lg text-yellow-500 hover:bg-yellow-500/20 transition-colors" title="Bloquejar">
-                          <Ban size={16} />
-                        </button>
+
                         <button onClick={() => deleteUser(u._id)} className="p-2 bg-white/5 rounded-lg text-red-500 hover:bg-red-500/20 transition-colors" title="Eliminar">
                           <Trash2 size={16} />
                         </button>
@@ -280,9 +278,7 @@ const AdminDashboard = () => {
                         <button onClick={() => handleEditClick(a)} className="p-2 bg-white/5 rounded-lg text-lime hover:bg-lime/20 transition-colors" title="Editar">
                           <Edit size={16} />
                         </button>
-                        <button onClick={() => toggleHide(a._id)} className="p-2 bg-white/5 rounded-lg text-blue-500 hover:bg-blue-500/20 transition-colors" title="Visibilitat">
-                          {a.isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
-                        </button>
+
                         <button onClick={() => deleteActivity(a._id)} className="p-2 bg-white/5 rounded-lg text-red-500 hover:bg-red-500/20 transition-colors" title="Eliminar">
                           <Trash2 size={16} />
                         </button>
